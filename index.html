@@ -1,13 +1,44 @@
 <html>
-    <h1>Student Login</h1>
     <body>
-        <form>
+        <style>
+            body{
+                font-family:Arial;
+                background-color:white;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100vh;
+                margin: 0;
+            }
+            h1{
+                text-align:center;
+            }
+            button{
+                background-color:#007bff;
+            }
+            .container{
+                width:200px;
+                margin:30 px;
+                padding:60px;
+                background:white;
+                border-radius:8px;
+                box-shadow:0 0 6px rgba(0,0,0,0.2);
+            }
+        </style>
+        </body>
+
+        <div class="container">
+            <h1>User Login</h1>
+            <form text-align="center">
             <label>Username:</label><br>
             <input type="text" name="username" placeholder="Enter user name"><br>
             <label>Password:</label><br>
             <input type="password" name="password" placeholder="Enter password"><br>
+            <div class="buttons">
             <input type="submit" value="Login">
-        </form>
-        <p>Forgot password?</p>
-    </body>
+            <p>Forgot Password?</p>
+            </div
+            </div>
+        </div>
+            </form>
 </html>

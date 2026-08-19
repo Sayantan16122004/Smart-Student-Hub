@@ -1,4 +1,8 @@
+<!DOCTYPE html>
 <html>
+    <head>
+        <title>Login</title>
+    </head>
     <body>
         <style>
             body{
@@ -40,24 +44,33 @@
                 border-radius:8px;
                 box-shadow:0 0 6px rgba(0,0,0,0.2);
             }
+            .input-box{
+                margin-bottom:15px;
+                padding:8px;
+                width:100%;
+                box-sizing: border-box;
+            }
+            .font-size{
+                font-size:20px;
+            }
         </style>
         </body>
 
         <div class="container">
-            <h1>User Login</h1>
+            <h1>User Login</h1><br>
             <form text-align="center">
-                 <label><B>User role</B></label><br>
+                 <label class="font-size"><B>User role</B></label><br>
                 <input type="radio" name="role" value="Student">
                 <label>Student</label>
                 <input type="radio" name="role" value="Faculty">
                 <label>Faculty</label>
                 <input type="radio" name="role" value="Admin">
-                <label>Admin</label><br>
+                <label>Admin</label><br><br>
             </select>
-            <label><b>Username:</b></label><br>
-            <input type="text" name="username" placeholder="Enter user name" required><br>
-            <label><b>Password:</b></label><br>
-            <input type="password" name="password" placeholder="Enter password" required><br>
+            <label class="font-size"><b>User id:</b></label><br>
+            <input type="text" name="username" placeholder="Enter user name" class="input-box" required><br>
+            <label class="font-size"><b>Password:</b></label><br>
+            <input type="password" name="password" placeholder="Enter password" class="input-box" required><br>
             <div class="buttons">
             <input type="submit" value="Login">
             <p>Forgot Password?</p>

@@ -13,11 +13,27 @@
             h1{
                 text-align:center;
             }
-            button{
-                background-color:#007bff;
+            .buttons{
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                margin-top:20px;
             }
+            .buttons input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buttons p {
+            margin: 0;
+            color: #007bff;
+            cursor: pointer;
+        }
             .container{
-                width:200px;
+                width:300px;
                 margin:30 px;
                 padding:60px;
                 background:white;
@@ -30,9 +46,17 @@
         <div class="container">
             <h1>User Login</h1>
             <form text-align="center">
-            <label>Username:</label><br>
+                 <label><B>User role</B></label><br>
+                <input type="radio" name="role" value="Student">
+                <label>Student</label>
+                <input type="radio" name="role" value="Faculty">
+                <label>Faculty</label>
+                <input type="radio" name="role" value="Admin">
+                <label>Admin</label><br>
+            </select>
+            <label><b>Username:</b></label><br>
             <input type="text" name="username" placeholder="Enter user name" required><br>
-            <label>Password:</label><br>
+            <label><b>Password:</b></label><br>
             <input type="password" name="password" placeholder="Enter password" required><br>
             <div class="buttons">
             <input type="submit" value="Login">

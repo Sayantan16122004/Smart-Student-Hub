@@ -1,0 +1,71 @@
+.login-page {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    width: 300px;
+    padding: 60px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.login-container h1 {
+    text-align: center;
+}
+
+.college-name {
+    background-color: #0057b8;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+    margin: -60px -60px 30px -60px;
+    border-radius: 8px 8px 0 0;
+    font-size: 20px;
+}
+
+.role-options {
+    margin: 10px 0 20px;
+}
+
+.role-options input {
+    margin-left: 10px;
+}
+
+.input-box {
+    margin: 5px 0 15px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.font-size {
+    font-size: 20px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buttons input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.buttons p {
+    margin: 0;
+    color: #007bff;
+    cursor: pointer;
+}

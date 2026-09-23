@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const API_BASE = "http://localhost:5000";
 
 const UserIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -62,6 +65,7 @@ const ROLES = [
 ];
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [role, setRole] = useState("student");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -74,6 +78,7 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -82,6 +87,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match.");
@@ -94,9 +100,31 @@ export default function Signup() {
 
     setLoading(true);
     try {
-      // Hook up to your auth endpoint here
-      // await fetch("/api/auth/signup", { method: "POST", body: JSON.stringify({ ...form, role }) })
-      console.log("signup submit", { ...form, role });
+      const res = await fetch(`${API_BASE}/api/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: form.fullName,
+          email: form.email,
+          password: form.password,
+          confirmPassword: form.confirmPassword,
+          role,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data?.message || data?.detail || "Signup failed. Please try again.");
+        return;
+      }
+
+      setSuccess("Account created! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (err) {
+      setError("Could not reach the server. Is the backend running?");
     } finally {
       setLoading(false);
     }
@@ -113,7 +141,7 @@ export default function Signup() {
       />
       <div className="absolute inset-0 bg-slate-950/35" />
 
-      <div className="relative z-10 flex flex-col items-center w-full h-full justify-start pt-1 sm:pt-2 overflow-hidden">
+      <div className="relative z-10 flex flex-col items-center w-full h-full justify-center overflow-hidden">
         <img
           src="/logo.png"
           alt="Hooghly Engineering & Technology College"
@@ -122,7 +150,7 @@ export default function Signup() {
         <h1 className="mt-3 mb-3 text-center text-lg sm:text-2xl font-bold text-white leading-tight drop-shadow-lg whitespace-nowrap">
           HOOGHLY ENGINEERING &amp; TECHNOLOGY COLLEGE
         </h1>
-        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl p-5 mt-2 max-h-[74vh] overflow-y-auto">
+        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl p-5">
           <h2 className="text-2xl font-bold text-white">
             Create <span className="text-blue-400">Account</span>
           </h2>
@@ -245,6 +273,11 @@ export default function Signup() {
             {error && (
               <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
                 {error}
+              </p>
+            )}
+            {success && (
+              <p className="text-sm text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
+                {success}
               </p>
             )}
 

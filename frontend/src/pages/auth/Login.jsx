@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const API_BASE = "http://localhost:5000";
 
 const UserIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -55,11 +58,14 @@ const ROLES = [
 ];
 
 export default function Login() {
+  const navigate = useNavigate();
   const [role, setRole] = useState("student");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -67,11 +73,48 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
     setLoading(true);
+
     try {
-      // Hook up to your auth endpoint here
-      // await fetch("/api/auth/login", { method: "POST", body: JSON.stringify({ ...form, role }) })
-      console.log("login submit", { ...form, role, rememberMe });
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: form.username,
+          password: form.password,
+          role,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data?.message || data?.detail || "Login failed. Please check your credentials.");
+        return;
+      }
+
+      // Save auth info
+      if (data.access_token) {
+        localStorage.setItem("access_token", data.access_token);
+      }
+      if (data.role) {
+        localStorage.setItem("role", data.role);
+      }
+      if (data.fullName) {
+        localStorage.setItem("fullName", data.fullName);
+      }
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      }
+
+      setSuccess("Login successful! Redirecting...");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    } catch (err) {
+      setError("Could not reach the server. Is the backend running?");
     } finally {
       setLoading(false);
     }
@@ -180,6 +223,17 @@ export default function Login() {
                 Forgot Password?
               </a>
             </div>
+
+            {error && (
+              <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
+                {error}
+              </p>
+            )}
+            {success && (
+              <p className="text-sm text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
+                {success}
+              </p>
+            )}
 
             <button
               type="submit"

@@ -113,16 +113,16 @@ export default function Signup() {
       />
       <div className="absolute inset-0 bg-slate-950/35" />
 
-      <div className="relative z-10 flex flex-col items-center w-full h-full justify-start pt-2 sm:pt-3 overflow-hidden">
+      <div className="relative z-10 flex flex-col items-center w-full h-full justify-start pt-1 sm:pt-2 overflow-hidden">
         <img
-          src="/logo.jpg"
+          src="/logo.png"
           alt="Hooghly Engineering & Technology College"
-          className="h-28 w-28 sm:h-32 sm:w-32 rounded-full border-2 border-white/80 shadow-lg object-cover"
+          className="h-20 w-20 sm:h-24 sm:w-24 object-contain"
         />
-        <h1 className="mt-2 mb-2 text-center text-base sm:text-xl font-bold text-white leading-tight drop-shadow-lg whitespace-nowrap">
+        <h1 className="mt-3 mb-3 text-center text-lg sm:text-2xl font-bold text-white leading-tight drop-shadow-lg whitespace-nowrap">
           HOOGHLY ENGINEERING &amp; TECHNOLOGY COLLEGE
         </h1>
-        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl p-5 max-h-[72vh] overflow-y-auto">
+        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl p-5 mt-2 max-h-[74vh] overflow-y-auto">
           <h2 className="text-2xl font-bold text-white">
             Create <span className="text-blue-400">Account</span>
           </h2>
@@ -154,7 +154,7 @@ export default function Signup() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-3 space-y-2.5">
+          <form onSubmit={handleSubmit} className="mt-3 space-y-3">
             <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3 focus-within:border-blue-400 transition-colors">
               <span className="text-slate-400"><UserIcon /></span>
               <input

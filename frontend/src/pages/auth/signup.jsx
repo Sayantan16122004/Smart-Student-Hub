@@ -7,6 +7,13 @@ const UserIcon = () => (
   </svg>
 );
 
+const MailIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="M3 7l9 6 9-6" />
+  </svg>
+);
+
 const LockIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <rect x="4" y="10" width="16" height="10" rx="2" />
@@ -54,12 +61,19 @@ const ROLES = [
   { id: "admin", label: "Admin", icon: AdminIcon },
 ];
 
-export default function Login() {
+export default function Signup() {
   const [role, setRole] = useState("student");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [agree, setAgree] = useState(false);
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -67,11 +81,22 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (!agree) {
+      setError("Please accept the terms to continue.");
+      return;
+    }
+
     setLoading(true);
     try {
       // Hook up to your auth endpoint here
-      // await fetch("/api/auth/login", { method: "POST", body: JSON.stringify({ ...form, role }) })
-      console.log("login submit", { ...form, role, rememberMe });
+      // await fetch("/api/auth/signup", { method: "POST", body: JSON.stringify({ ...form, role }) })
+      console.log("signup submit", { ...form, role });
     } finally {
       setLoading(false);
     }
@@ -92,17 +117,17 @@ export default function Login() {
         <img
           src="/logo.jpg"
           alt="Hooghly Engineering & Technology College"
-          className="h-32 w-32 sm:h-40 sm:w-40 rounded-full border-2 border-white/80 shadow-lg object-cover"
+          className="h-28 w-28 sm:h-32 sm:w-32 rounded-full border-2 border-white/80 shadow-lg object-cover"
         />
-        <h1 className="mt-2 mb-3 text-center text-lg sm:text-2xl font-bold text-white leading-tight drop-shadow-lg whitespace-nowrap">
+        <h1 className="mt-2 mb-2 text-center text-base sm:text-xl font-bold text-white leading-tight drop-shadow-lg whitespace-nowrap">
           HOOGHLY ENGINEERING &amp; TECHNOLOGY COLLEGE
         </h1>
-        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl p-5">
+        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl p-5 max-h-[72vh] overflow-y-auto">
           <h2 className="text-2xl font-bold text-white">
-            User <span className="text-blue-400">Login</span>
+            Create <span className="text-blue-400">Account</span>
           </h2>
           <p className="mt-1 text-sm text-slate-300">
-            Welcome back! Please login to continue.
+            Join us! Fill in your details to get started.
           </p>
 
           <div className="mt-3">
@@ -134,11 +159,25 @@ export default function Login() {
               <span className="text-slate-400"><UserIcon /></span>
               <input
                 type="text"
-                name="username"
-                value={form.username}
+                name="fullName"
+                value={form.fullName}
                 onChange={handleChange}
-                placeholder="Enter user name"
-                autoComplete="username"
+                placeholder="Enter full name"
+                autoComplete="name"
+                required
+                className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
+              />
+            </div>
+
+            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3 focus-within:border-blue-400 transition-colors">
+              <span className="text-slate-400"><MailIcon /></span>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Enter email address"
+                autoComplete="email"
                 required
                 className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
               />
@@ -152,7 +191,7 @@ export default function Login() {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="Enter password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 required
                 className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
               />
@@ -166,27 +205,55 @@ export default function Login() {
               </button>
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 rounded accent-blue-500"
-                />
-                Remember me
-              </label>
-              <a href="/forgot-password" className="text-blue-400 hover:text-blue-300">
-                Forgot Password?
-              </a>
+            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3 focus-within:border-blue-400 transition-colors">
+              <span className="text-slate-400"><LockIcon /></span>
+              <input
+                type={showConfirm ? "text" : "password"}
+                name="confirmPassword"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm password"
+                autoComplete="new-password"
+                required
+                className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm((s) => !s)}
+                className="text-slate-400 hover:text-white transition-colors"
+                aria-label={showConfirm ? "Hide password" : "Show password"}
+              >
+                <EyeIcon off={showConfirm} />
+              </button>
             </div>
+
+            <label className="flex items-start gap-2 text-sm text-slate-300 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) => setAgree(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded accent-blue-500"
+              />
+              <span>
+                I agree to the{" "}
+                <a href="/terms" className="text-blue-400 hover:text-blue-300">
+                  Terms &amp; Conditions
+                </a>
+              </span>
+            </label>
+
+            {error && (
+              <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
+                {error}
+              </p>
+            )}
 
             <button
               type="submit"
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-700 via-blue-500 to-sky-400 py-3 font-semibold text-white shadow-lg hover:opacity-95 active:scale-[0.99] transition disabled:opacity-60"
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Creating account..." : "Sign Up"}
               {!loading && (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M13 6l6 6-6 6" />
@@ -196,9 +263,9 @@ export default function Login() {
           </form>
 
           <div className="mt-4 border-t border-white/10 pt-3 text-center text-sm text-slate-300">
-            New here?{" "}
-            <a href="/signup" className="text-blue-400 hover:text-blue-300 font-medium">
-              Create an account
+            Already have an account?{" "}
+            <a href="/login" className="text-blue-400 hover:text-blue-300 font-medium">
+              Login
             </a>
           </div>
         </div>

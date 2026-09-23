@@ -24,6 +24,8 @@ const LockIcon = () => (
   </svg>
 );
 
+// off = true  -> password is HIDDEN (dots) -> show CLOSED/slashed eye
+// off = false -> password is VISIBLE       -> show OPEN eye
 const EyeIcon = ({ off }) =>
   off ? (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -69,7 +71,6 @@ export default function Signup() {
   const [role, setRole] = useState("student");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [agree, setAgree] = useState(false);
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -91,10 +92,6 @@ export default function Signup() {
 
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match.");
-      return;
-    }
-    if (!agree) {
-      setError("Please accept the terms to continue.");
       return;
     }
 
@@ -141,6 +138,22 @@ export default function Signup() {
       />
       <div className="absolute inset-0 bg-slate-950/35" />
 
+      {/* Hide native browser password-reveal icons so only our custom eye shows */}
+      <style>{`
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear {
+          display: none;
+        }
+        input::-webkit-credentials-auto-fill-button,
+        input::-webkit-strong-password-auto-fill-button {
+          display: none !important;
+          visibility: hidden;
+          pointer-events: none;
+          position: absolute;
+          right: 0;
+        }
+      `}</style>
+
       <div className="relative z-10 flex flex-col items-center w-full h-full justify-center overflow-hidden">
         <img
           src="/logo.png"
@@ -159,7 +172,6 @@ export default function Signup() {
           </p>
 
           <div className="mt-3">
-            <p className="text-sm text-slate-300 mb-2">User Role</p>
             <div className="grid grid-cols-3 gap-2">
               {ROLES.map(({ id, label, icon: Icon }) => {
                 const active = role === id;
@@ -182,7 +194,10 @@ export default function Signup() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-3 space-y-3">
+          <form onSubmit={handleSubmit} className="mt-3 space-y-3" autoComplete="off">
+            <input type="text" name="fake-username" autoComplete="username" className="hidden" />
+            <input type="password" name="fake-password" autoComplete="new-password" className="hidden" />
+
             <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3 focus-within:border-blue-400 transition-colors">
               <span className="text-slate-400"><UserIcon /></span>
               <input
@@ -191,7 +206,7 @@ export default function Signup() {
                 value={form.fullName}
                 onChange={handleChange}
                 placeholder="Enter full name"
-                autoComplete="name"
+                autoComplete="off"
                 required
                 className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
               />
@@ -205,7 +220,7 @@ export default function Signup() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Enter email address"
-                autoComplete="email"
+                autoComplete="off"
                 required
                 className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
               />
@@ -226,10 +241,10 @@ export default function Signup() {
               <button
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-400 hover:text-white transition-colors shrink-0"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                <EyeIcon off={showPassword} />
+                <EyeIcon off={!showPassword} />
               </button>
             </div>
 
@@ -248,27 +263,12 @@ export default function Signup() {
               <button
                 type="button"
                 onClick={() => setShowConfirm((s) => !s)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-400 hover:text-white transition-colors shrink-0"
                 aria-label={showConfirm ? "Hide password" : "Show password"}
               >
-                <EyeIcon off={showConfirm} />
+                <EyeIcon off={!showConfirm} />
               </button>
             </div>
-
-            <label className="flex items-start gap-2 text-sm text-slate-300 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={agree}
-                onChange={(e) => setAgree(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded accent-blue-500"
-              />
-              <span>
-                I agree to the{" "}
-                <a href="/terms" className="text-blue-400 hover:text-blue-300">
-                  Terms &amp; Conditions
-                </a>
-              </span>
-            </label>
 
             {error && (
               <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">

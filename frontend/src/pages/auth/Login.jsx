@@ -95,7 +95,6 @@ export default function Login() {
         return;
       }
 
-      // Save auth info
       if (data.access_token) {
         localStorage.setItem("access_token", data.access_token);
       }
@@ -172,7 +171,10 @@ export default function Login() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-3 space-y-3">
+          <form onSubmit={handleSubmit} className="mt-3 space-y-3" autoComplete="off">
+            <input type="text" name="fake-username" autoComplete="username" className="hidden" />
+            <input type="password" name="fake-password" autoComplete="new-password" className="hidden" />
+
             <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3 focus-within:border-blue-400 transition-colors">
               <span className="text-slate-400"><UserIcon /></span>
               <input
@@ -181,7 +183,7 @@ export default function Login() {
                 value={form.username}
                 onChange={handleChange}
                 placeholder="Enter user name"
-                autoComplete="username"
+                autoComplete="off"
                 required
                 className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
               />
@@ -195,7 +197,7 @@ export default function Login() {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="Enter password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 required
                 className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-sm"
               />

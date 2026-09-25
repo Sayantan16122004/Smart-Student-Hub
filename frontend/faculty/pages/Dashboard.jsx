@@ -84,10 +84,30 @@ const STATS = [
 ];
 
 const ACCENTS = {
-  blue: { icon: "bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-600/40", text: "text-blue-500 dark:text-blue-400", glow: "hover:shadow-blue-500/20" },
-  purple: { icon: "bg-gradient-to-br from-purple-500 to-purple-600 shadow-purple-600/40", text: "text-purple-500 dark:text-purple-400", glow: "hover:shadow-purple-500/20" },
-  emerald: { icon: "bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-emerald-600/40", text: "text-emerald-500 dark:text-emerald-400", glow: "hover:shadow-emerald-500/20" },
-  amber: { icon: "bg-gradient-to-br from-amber-500 to-amber-600 shadow-amber-600/40", text: "text-amber-500 dark:text-amber-400", glow: "hover:shadow-amber-500/20" },
+  blue: {
+    icon: "bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-600/40",
+    text: "text-blue-500 dark:text-blue-300",
+    glow: "hover:shadow-blue-500/25",
+    card: "bg-blue-50 border-blue-200 dark:bg-blue-500/[0.12] dark:border-blue-400/25",
+  },
+  purple: {
+    icon: "bg-gradient-to-br from-purple-500 to-purple-600 shadow-purple-600/40",
+    text: "text-purple-500 dark:text-purple-300",
+    glow: "hover:shadow-purple-500/25",
+    card: "bg-purple-50 border-purple-200 dark:bg-purple-500/[0.12] dark:border-purple-400/25",
+  },
+  emerald: {
+    icon: "bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-emerald-600/40",
+    text: "text-emerald-500 dark:text-emerald-300",
+    glow: "hover:shadow-emerald-500/25",
+    card: "bg-emerald-50 border-emerald-200 dark:bg-emerald-500/[0.12] dark:border-emerald-400/25",
+  },
+  amber: {
+    icon: "bg-gradient-to-br from-amber-500 to-amber-600 shadow-amber-600/40",
+    text: "text-amber-500 dark:text-amber-300",
+    glow: "hover:shadow-amber-500/25",
+    card: "bg-amber-50 border-amber-200 dark:bg-amber-500/[0.12] dark:border-amber-400/25",
+  },
 };
 
 const ACTIVITIES = [
@@ -128,14 +148,18 @@ function Sparkline({ strokeClass }) {
   );
 }
 
-/* Glass card wrapper — backdrop blur + border glow + diagonal "sheen" overlay for the glossy look */
-function GlassCard({ className = "", children }) {
+/* Glass card wrapper — backdrop blur + border glow + diagonal "sheen" overlay for the glossy look.
+   Pass `tint` (bg + border utility classes) to color a card; when omitted it falls back to the
+   neutral glass look. Keeping this as an either/or choice avoids two bg-color classes fighting
+   for the same element. */
+function GlassCard({ className = "", tint = "", children }) {
+  const bg = tint || "bg-white/60 dark:bg-white/[0.04] border-white/10 dark:border-white/10";
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border border-white/10 dark:border-white/10 bg-white/60 dark:bg-white/[0.04] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(59,130,246,0.15)] ${className}`}
+      className={`relative overflow-hidden rounded-2xl border backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(59,130,246,0.15)] ${bg} ${className}`}
     >
       {/* glossy sheen */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent dark:from-white/[0.06] dark:via-transparent dark:to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent dark:from-white/[0.08] dark:via-transparent dark:to-transparent" />
       <div className="relative">{children}</div>
     </div>
   );
@@ -151,7 +175,10 @@ export default function Dashboard() {
     <div className="relative p-4 sm:p-6 space-y-5">
       {/* Welcome banner + Today card */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
-        <GlassCard className="lg:col-span-3">
+        <GlassCard
+          className="lg:col-span-3"
+          tint="bg-blue-50 border-blue-200 dark:bg-blue-500/[0.12] dark:border-blue-400/25"
+        >
           <div className="p-6 sm:p-8 flex items-center gap-6">
             {/* Swap this circle for <img src="/avatar.jpg" className="h-20 w-20 rounded-full object-cover" /> once you have a real photo */}
             <span className="hidden sm:flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-500/30 shadow-lg shadow-blue-600/40">
@@ -173,7 +200,7 @@ export default function Dashboard() {
           </div>
         </GlassCard>
 
-        <GlassCard>
+        <GlassCard tint="bg-indigo-50 border-indigo-200 dark:bg-indigo-500/[0.12] dark:border-indigo-400/25">
           <div className="p-6 flex flex-col justify-center h-full">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-600/40 mb-3">
               <CalendarSmallIcon />
@@ -193,7 +220,7 @@ export default function Dashboard() {
           const Icon = s.icon;
           const a = ACCENTS[s.accent];
           return (
-            <GlassCard key={s.label} className={a.glow}>
+            <GlassCard key={s.label} className={a.glow} tint={a.card}>
               <div className="p-5">
                 <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${a.icon} text-white shadow-lg mb-3`}>
                   <Icon />

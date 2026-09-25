@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Basic resets — keep this minimal so Tailwind utilities stay in control */
 html,

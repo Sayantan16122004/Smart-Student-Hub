@@ -108,7 +108,7 @@ export default function Login() {
 
       setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/faculty");
       }, 1000);
     } catch (err) {
       setError("Could not reach the server. Is the backend running?");

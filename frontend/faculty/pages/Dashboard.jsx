@@ -4,7 +4,7 @@ const CalendarSmallIcon = () => (
   </svg>
 );
 const UsersIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="9" cy="8" r="3" /><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6" />
     <circle cx="17" cy="8" r="3" /><path d="M16 14.2c2.9.6 5 2.9 5 5.8" />
   </svg>
@@ -65,8 +65,8 @@ const SettingsIcon = () => (
     <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
   </svg>
 );
-const ArrowRightIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+const ArrowRightIcon = (props) => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
     <path d="M5 12h14M13 6l6 6-6 6" />
   </svg>
 );
@@ -84,63 +84,60 @@ const STATS = [
 ];
 
 const ACCENTS = {
-  blue: {
-    card: "border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-transparent",
-    icon: "bg-blue-500/90",
-    text: "text-blue-500 dark:text-blue-400",
-  },
-  purple: {
-    card: "border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-transparent",
-    icon: "bg-purple-500/90",
-    text: "text-purple-500 dark:text-purple-400",
-  },
-  emerald: {
-    card: "border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-transparent",
-    icon: "bg-emerald-500/90",
-    text: "text-emerald-500 dark:text-emerald-400",
-  },
-  amber: {
-    card: "border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-transparent",
-    icon: "bg-amber-500/90",
-    text: "text-amber-500 dark:text-amber-400",
-  },
+  blue: { icon: "bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-600/40", text: "text-blue-500 dark:text-blue-400", glow: "hover:shadow-blue-500/20" },
+  purple: { icon: "bg-gradient-to-br from-purple-500 to-purple-600 shadow-purple-600/40", text: "text-purple-500 dark:text-purple-400", glow: "hover:shadow-purple-500/20" },
+  emerald: { icon: "bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-emerald-600/40", text: "text-emerald-500 dark:text-emerald-400", glow: "hover:shadow-emerald-500/20" },
+  amber: { icon: "bg-gradient-to-br from-amber-500 to-amber-600 shadow-amber-600/40", text: "text-amber-500 dark:text-amber-400", glow: "hover:shadow-amber-500/20" },
 };
 
 const ACTIVITIES = [
-  { icon: UserPlusIcon, color: "bg-blue-500/90", title: "New student registered", detail: "Rahul Das (CSE-2023-24)", time: "2 hours ago" },
-  { icon: CalendarSmallIcon, color: "bg-emerald-500/90", title: "Attendance updated", detail: "CSE - 3rd Year (Section A)", time: "4 hours ago" },
-  { icon: CheckBadgeIcon, color: "bg-purple-500/90", title: "Achievement verified", detail: "Riya Sharma (CSE-2022-23)", time: "6 hours ago" },
-  { icon: MessageSmallIcon, color: "bg-pink-500/90", title: "New message from student", detail: "Souvik Paul", time: "8 hours ago" },
+  { icon: UserPlusIcon, color: "from-blue-500 to-blue-600", title: "New student registered", detail: "Rahul Das (CSE-2023-24)", time: "2 hours ago" },
+  { icon: CalendarSmallIcon, color: "from-emerald-500 to-emerald-600", title: "Attendance updated", detail: "CSE - 3rd Year (Section A)", time: "4 hours ago" },
+  { icon: CheckBadgeIcon, color: "from-purple-500 to-purple-600", title: "Achievement verified", detail: "Riya Sharma (CSE-2022-23)", time: "6 hours ago" },
+  { icon: MessageSmallIcon, color: "from-pink-500 to-pink-600", title: "New message from student", detail: "Souvik Paul", time: "8 hours ago" },
 ];
 
 const QUICK_ACTIONS = [
-  { label: "View Students", icon: UsersIcon, color: "from-blue-600 to-blue-500" },
-  { label: "Academic Info", icon: BookIcon, color: "from-indigo-600 to-indigo-500" },
-  { label: "Attendance", icon: CalendarSmallIcon, color: "from-emerald-600 to-emerald-500" },
-  { label: "Performance", icon: ClipboardIcon, color: "from-amber-600 to-amber-500" },
-  { label: "Certificates", icon: FileCheckIcon, color: "from-purple-600 to-purple-500" },
-  { label: "Settings", icon: SettingsIcon, color: "from-pink-600 to-pink-500" },
+  { label: "View Students", icon: UsersIcon, color: "from-blue-600 to-blue-500 shadow-blue-600/30" },
+  { label: "Academic Info", icon: BookIcon, color: "from-indigo-600 to-indigo-500 shadow-indigo-600/30" },
+  { label: "Attendance", icon: CalendarSmallIcon, color: "from-emerald-600 to-emerald-500 shadow-emerald-600/30" },
+  { label: "Performance", icon: ClipboardIcon, color: "from-amber-600 to-amber-500 shadow-amber-600/30" },
+  { label: "Certificates", icon: FileCheckIcon, color: "from-purple-600 to-purple-500 shadow-purple-600/30" },
+  { label: "Settings", icon: SettingsIcon, color: "from-pink-600 to-pink-500 shadow-pink-600/30" },
 ];
 
 const NOTICES = [
-  { day: "25", month: "Sep", title: "Internal Assessment", detail: "CSE - 3rd Year", color: "bg-blue-500/90" },
-  { day: "28", month: "Sep", title: "Department Meeting", detail: "Room 204 | 11:00 AM", color: "bg-purple-500/90" },
-  { day: "02", month: "Oct", title: "Result Declaration", detail: "Session 2025-26", color: "bg-emerald-500/90" },
-  { day: "", month: "", title: "Notice", detail: "Fill attendance before 30 Sep", color: "bg-amber-500/90", isNotice: true },
+  { day: "25", month: "Sep", title: "Internal Assessment", detail: "CSE - 3rd Year", color: "from-blue-500 to-blue-600" },
+  { day: "28", month: "Sep", title: "Department Meeting", detail: "Room 204 | 11:00 AM", color: "from-purple-500 to-purple-600" },
+  { day: "02", month: "Oct", title: "Result Declaration", detail: "Session 2025-26", color: "from-emerald-500 to-emerald-600" },
+  { title: "Notice", detail: "Fill attendance before 30 Sep", color: "from-amber-500 to-amber-600", isNotice: true },
 ];
 
-function Sparkline({ color }) {
+function Sparkline({ strokeClass }) {
   return (
-    <svg viewBox="0 0 100 30" className="w-full h-8" preserveAspectRatio="none">
+    <svg viewBox="0 0 100 30" className="w-full h-8 mt-2" preserveAspectRatio="none">
       <polyline
         points="0,25 15,20 30,22 45,14 60,16 75,6 100,8"
         fill="none"
-        stroke={color}
+        className={strokeClass}
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
+  );
+}
+
+/* Glass card wrapper — backdrop blur + border glow + diagonal "sheen" overlay for the glossy look */
+function GlassCard({ className = "", children }) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl border border-white/10 dark:border-white/10 bg-white/60 dark:bg-white/[0.04] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(59,130,246,0.15)] ${className}`}
+    >
+      {/* glossy sheen */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent dark:from-white/[0.06] dark:via-transparent dark:to-transparent" />
+      <div className="relative">{children}</div>
+    </div>
   );
 }
 
@@ -151,39 +148,43 @@ export default function Dashboard() {
   const timeStr = today.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
 
   return (
-    <div className="p-4 sm:p-6 space-y-5">
+    <div className="relative p-4 sm:p-6 space-y-5">
       {/* Welcome banner + Today card */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
-        <div className="lg:col-span-3 relative overflow-hidden rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-900/40 via-slate-900/60 to-slate-900/60 dark:from-blue-950/60 dark:via-[#0a1128] dark:to-[#0a1128] p-6 flex items-center gap-6">
-          {/* Swap this circle for <img src="/avatar.jpg" className="h-20 w-20 rounded-full object-cover" /> once you have a real photo */}
-          <span className="hidden sm:flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-500/30">
-            <UsersIcon />
-          </span>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm text-blue-300 dark:text-blue-300">Welcome back,</p>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2 flex-wrap">
-              {fullName}
-              <CheckBadgeIcon className="text-blue-400" />
-            </h1>
-            <p className="mt-1 text-sm text-slate-300">Together towards better education</p>
+        <GlassCard className="lg:col-span-3">
+          <div className="p-6 sm:p-8 flex items-center gap-6">
+            {/* Swap this circle for <img src="/avatar.jpg" className="h-20 w-20 rounded-full object-cover" /> once you have a real photo */}
+            <span className="hidden sm:flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-500/30 shadow-lg shadow-blue-600/40">
+              <UsersIcon />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-blue-500 dark:text-blue-300">Welcome back,</p>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2 flex-wrap">
+                {fullName}
+                <span className="text-blue-500 dark:text-blue-400"><CheckBadgeIcon /></span>
+              </h1>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-300">Together towards better education</p>
+            </div>
+            <div className="hidden md:block max-w-xs border-l border-slate-200 dark:border-white/10 pl-6 text-sm text-slate-500 dark:text-slate-300 italic">
+              <span className="text-blue-500 dark:text-blue-400 not-italic"><QuoteIcon /></span>
+              <p className="mt-1">"Education is the most powerful weapon which you can use to change the world."</p>
+              <p className="mt-2 text-slate-400 dark:text-slate-400 not-italic">— Nelson Mandela</p>
+            </div>
           </div>
-          <div className="hidden md:block max-w-xs border-l border-white/10 pl-6 text-sm text-slate-300 italic">
-            <span className="text-blue-400 not-italic"><QuoteIcon /></span>
-            <p className="mt-1">"Education is the most powerful weapon which you can use to change the world."</p>
-            <p className="mt-2 text-slate-400 not-italic">— Nelson Mandela</p>
-          </div>
-        </div>
+        </GlassCard>
 
-        <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-900/30 to-slate-900/50 dark:from-blue-950/50 dark:to-[#0a1128] p-6 flex flex-col justify-center">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/90 text-white mb-3">
-            <CalendarSmallIcon />
-          </span>
-          <p className="text-sm text-slate-400">Today</p>
-          <p className="text-white font-semibold">{dateStr}</p>
-          <p className="mt-2 text-2xl font-bold text-white">
-            {timeStr.split(" ")[0]} <span className="text-sm font-medium text-slate-400">{timeStr.split(" ")[1]}</span>
-          </p>
-        </div>
+        <GlassCard>
+          <div className="p-6 flex flex-col justify-center h-full">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-600/40 mb-3">
+              <CalendarSmallIcon />
+            </span>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Today</p>
+            <p className="text-slate-900 dark:text-white font-semibold">{dateStr}</p>
+            <p className="mt-2 text-2xl font-bold text-slate-900 dark:text-white">
+              {timeStr.split(" ")[0]} <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{timeStr.split(" ")[1]}</span>
+            </p>
+          </div>
+        </GlassCard>
       </div>
 
       {/* Stat cards */}
@@ -192,105 +193,111 @@ export default function Dashboard() {
           const Icon = s.icon;
           const a = ACCENTS[s.accent];
           return (
-            <div key={s.label} className={`rounded-2xl border ${a.card} dark:bg-[#0a1128] bg-white p-5`}>
-              <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${a.icon} text-white mb-3`}>
-                <Icon />
-              </span>
-              <p className="text-sm text-slate-500 dark:text-slate-400">{s.label}</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">{s.value}</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className={`text-xs font-medium ${a.text}`}>↑ {s.change}</span>
+            <GlassCard key={s.label} className={a.glow}>
+              <div className="p-5">
+                <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${a.icon} text-white shadow-lg mb-3`}>
+                  <Icon />
+                </span>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{s.label}</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">{s.value}</p>
+                <span className={`text-xs font-semibold ${a.text}`}>↑ {s.change}</span>
+                <Sparkline strokeClass={a.text} />
               </div>
-              <Sparkline color="currentColor" />
-            </div>
+            </GlassCard>
           );
         })}
       </div>
 
       {/* Recent Activities / Quick Actions / Calendar & Notices */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0a1128] p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-              <ClockIcon /> Recent Activities
-            </h2>
-            <button className="flex items-center gap-1 text-xs font-medium text-blue-500 dark:text-blue-400 hover:underline">
-              View All <ArrowRightIcon />
-            </button>
-          </div>
-          <div className="space-y-4">
-            {ACTIVITIES.map((a) => {
-              const Icon = a.icon;
-              return (
-                <div key={a.title} className="flex items-start gap-3">
-                  <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${a.color} text-white`}>
-                    <Icon />
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{a.title}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{a.detail}</p>
+        <GlassCard>
+          <div className="p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
+                <ClockIcon /> Recent Activities
+              </h2>
+              <button className="flex items-center gap-1 text-xs font-medium text-blue-500 dark:text-blue-400 hover:underline">
+                View All <ArrowRightIcon />
+              </button>
+            </div>
+            <div className="space-y-4">
+              {ACTIVITIES.map((a) => {
+                const Icon = a.icon;
+                return (
+                  <div key={a.title} className="flex items-start gap-3 group">
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${a.color} text-white shadow-md transition-transform duration-300 group-hover:scale-110`}>
+                      <Icon />
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{a.title}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{a.detail}</p>
+                    </div>
+                    <span className="text-xs text-slate-400 dark:text-slate-500 shrink-0">{a.time}</span>
                   </div>
-                  <span className="text-xs text-slate-400 dark:text-slate-500 shrink-0">{a.time}</span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </GlassCard>
 
-        <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0a1128] p-5">
-          <h2 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white mb-4">
-            <BoltIcon /> Quick Actions
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            {QUICK_ACTIONS.map((a) => {
-              const Icon = a.icon;
-              return (
-                <button
-                  key={a.label}
-                  type="button"
-                  className={`flex items-center justify-between rounded-xl bg-gradient-to-br ${a.color} px-4 py-3.5 text-white shadow-md hover:opacity-90 transition-opacity`}
-                >
-                  <span className="flex items-center gap-2 text-sm font-medium">
-                    <Icon /> {a.label}
-                  </span>
-                  <ArrowRightIcon />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0a1128] p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-              <CalendarSmallIcon /> Calendar &amp; Notices
+        <GlassCard>
+          <div className="p-5">
+            <h2 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white mb-4">
+              <BoltIcon /> Quick Actions
             </h2>
-            <button className="flex items-center gap-1 text-xs font-medium text-blue-500 dark:text-blue-400 hover:underline">
-              View All <ArrowRightIcon />
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              {QUICK_ACTIONS.map((a) => {
+                const Icon = a.icon;
+                return (
+                  <button
+                    key={a.label}
+                    type="button"
+                    className={`flex items-center justify-between rounded-xl bg-gradient-to-br ${a.color} px-4 py-3.5 text-white shadow-lg hover:scale-[1.03] hover:brightness-110 transition-all duration-300`}
+                  >
+                    <span className="flex items-center gap-2 text-sm font-medium">
+                      <Icon /> {a.label}
+                    </span>
+                    <ArrowRightIcon />
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <div className="space-y-3">
-            {NOTICES.map((n, i) => (
-              <div key={i} className="flex items-center gap-3">
-                {n.isNotice ? (
-                  <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${n.color} text-white`}>
-                    <BellSmallIcon />
-                  </span>
-                ) : (
-                  <span className={`flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-lg ${n.color} text-white text-[10px] leading-none font-semibold`}>
-                    <span>{n.day}</span>
-                    <span>{n.month}</span>
-                  </span>
-                )}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{n.title}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{n.detail}</p>
+        </GlassCard>
+
+        <GlassCard>
+          <div className="p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
+                <CalendarSmallIcon /> Calendar &amp; Notices
+              </h2>
+              <button className="flex items-center gap-1 text-xs font-medium text-blue-500 dark:text-blue-400 hover:underline">
+                View All <ArrowRightIcon />
+              </button>
+            </div>
+            <div className="space-y-3">
+              {NOTICES.map((n, i) => (
+                <div key={i} className="flex items-center gap-3 group">
+                  {n.isNotice ? (
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${n.color} text-white shadow-md transition-transform duration-300 group-hover:scale-110`}>
+                      <BellSmallIcon />
+                    </span>
+                  ) : (
+                    <span className={`flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-lg bg-gradient-to-br ${n.color} text-white text-[10px] leading-none font-semibold shadow-md transition-transform duration-300 group-hover:scale-110`}>
+                      <span>{n.day}</span>
+                      <span>{n.month}</span>
+                    </span>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{n.title}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{n.detail}</p>
+                  </div>
+                  <ArrowRightIcon className="text-slate-400 dark:text-slate-500 shrink-0" />
                 </div>
-                <ArrowRightIcon className="text-slate-400 dark:text-slate-500 shrink-0" />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </GlassCard>
       </div>
     </div>
   );

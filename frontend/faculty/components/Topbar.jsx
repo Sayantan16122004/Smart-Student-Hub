@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const SearchIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
   </svg>
 );
@@ -46,9 +46,9 @@ export default function Topbar() {
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
-    <header className="sticky top-0 z-10 flex items-center gap-4 px-4 sm:px-6 py-3.5 bg-white dark:bg-[#070b18]/90 backdrop-blur-md border-b border-slate-200 dark:border-white/10 transition-colors">
+    <header className="sticky top-0 z-20 flex items-center gap-4 px-6 sm:px-8 py-4 bg-white/70 dark:bg-white/[0.03] backdrop-blur-2xl border-b border-slate-200 dark:border-white/10 transition-colors">
       <div className="flex-1 max-w-xl">
-        <div className="flex items-center gap-2 rounded-full border border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 px-4 py-2.5 transition-colors">
+        <div className="flex items-center gap-3 rounded-full border border-slate-300 dark:border-white/10 bg-slate-100/80 dark:bg-white/5 px-5 py-3 transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-lg focus-within:shadow-blue-500/10">
           <span className="text-slate-500 dark:text-slate-400"><SearchIcon /></span>
           <input
             type="text"
@@ -61,10 +61,10 @@ export default function Topbar() {
       <button
         type="button"
         aria-label="Notifications"
-        className="relative rounded-full p-2.5 text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors"
+        className="relative rounded-full p-3 text-slate-600 dark:text-slate-300 bg-slate-100/80 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 hover:scale-105 transition-all duration-300"
       >
         <BellIcon />
-        <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-semibold text-white">
+        <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-semibold text-white animate-pulse shadow-lg shadow-red-500/50">
           3
         </span>
       </button>
@@ -72,9 +72,9 @@ export default function Topbar() {
       {/* Profile chip — swap the icon circle below for <img src="/avatar.jpg" .../> once you have a real photo */}
       <button
         type="button"
-        className="flex items-center gap-3 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/5 pl-2 pr-3 py-1.5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors"
+        className="flex items-center gap-3 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100/80 dark:bg-white/5 pl-2 pr-4 py-2 hover:bg-slate-200 dark:hover:bg-white/10 hover:scale-[1.02] transition-all duration-300"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-2 ring-blue-400/40 shadow-lg shadow-blue-600/30">
           <UserIcon />
         </span>
         <span className="text-left leading-tight">
@@ -83,7 +83,7 @@ export default function Topbar() {
             <ChevronDownIcon />
           </span>
           <span className="flex items-center gap-1 text-xs text-emerald-500 dark:text-emerald-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
             Online
           </span>
         </span>
@@ -93,12 +93,12 @@ export default function Topbar() {
         type="button"
         onClick={toggleTheme}
         aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-        className="rounded-full p-2.5 text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors"
+        className="rounded-full p-3 text-slate-600 dark:text-slate-300 bg-slate-100/80 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 hover:rotate-12 hover:scale-105 transition-all duration-300"
       >
         {theme === "dark" ? <MoonIcon /> : <SunIcon />}
       </button>
 
-      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 overflow-hidden shrink-0">
+      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 overflow-hidden shrink-0 ring-2 ring-white/10 shadow-lg shadow-purple-600/30 hover:scale-105 transition-transform duration-300">
         <img src="/logo.png" alt="College logo" className="h-6 w-6 object-contain" />
       </span>
     </header>

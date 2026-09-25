@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import FacultyLayout from "./FacultyLayout";
 
 import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile"; // existing file — left untouched
+import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 
 import StudentList from "./pages/my-students/StudentList";

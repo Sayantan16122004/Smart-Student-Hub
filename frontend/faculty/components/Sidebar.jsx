@@ -164,7 +164,7 @@ function linkClasses(active) {
   return `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
     active
       ? "bg-gradient-to-r from-blue-700 to-blue-500 text-white shadow"
-      : "text-slate-300 hover:bg-white/5"
+      : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
   }`;
 }
 
@@ -184,9 +184,9 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col w-72 shrink-0 h-screen sticky top-0 bg-slate-950/80 border-r border-white/10 px-3 py-4 overflow-y-auto">
-      <div className="px-2 pb-4 mb-2 border-b border-white/10">
-        <p className="text-xs uppercase tracking-wider text-slate-400">Faculty Portal</p>
+    <aside className="hidden lg:flex flex-col w-72 shrink-0 h-screen sticky top-0 bg-white dark:bg-slate-950/80 border-r border-slate-200 dark:border-white/10 px-3 py-4 overflow-y-auto transition-colors">
+      <div className="px-2 pb-4 mb-2 border-b border-slate-200 dark:border-white/10">
+        <p className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Faculty Portal</p>
       </div>
 
       <nav className="flex-1 space-y-1">
@@ -213,14 +213,14 @@ export default function Sidebar() {
               <button
                 type="button"
                 onClick={() => toggleGroup(item.label)}
-                className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 hover:bg-white/5 transition-colors"
+                className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               >
                 <Icon />
                 <span className="flex-1 text-left">{item.label}</span>
                 <ChevronIcon open={open} />
               </button>
               {open && (
-                <div className="mt-1 ml-5 space-y-1 border-l border-white/10 pl-3">
+                <div className="mt-1 ml-5 space-y-1 border-l border-slate-200 dark:border-white/10 pl-3">
                   {item.children.map((child) => (
                     <NavLink
                       key={child.to}
@@ -228,8 +228,8 @@ export default function Sidebar() {
                       className={({ isActive }) =>
                         `block rounded-lg px-3 py-2 text-sm transition-colors ${
                           isActive
-                            ? "bg-white/10 text-white"
-                            : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                            ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white"
+                            : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-slate-200"
                         }`
                       }
                     >
@@ -245,7 +245,7 @@ export default function Sidebar() {
         <button
           type="button"
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors mt-2"
+          className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-red-500 dark:text-red-400 hover:bg-red-500/10 transition-colors mt-2"
         >
           <LogoutIcon />
           <span>Logout</span>

@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./auth/login";
 import Signup from "./auth/signup";
-import FacultyRoutes from "./faculty/FacultyRoutes";
+import FacultyRoutes from "../faculty/FacultyRoutes";
 
 function AppRoutes() {
     return (

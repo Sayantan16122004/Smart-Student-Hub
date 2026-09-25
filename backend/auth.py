@@ -13,6 +13,11 @@ router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 JWT_SECRET = os.getenv("JWT_SECRET")
+if not JWT_SECRET:
+    raise RuntimeError(
+        "JWT_SECRET is not set. Add JWT_SECRET=<a-long-random-string> to your .env file."
+    )
+
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_MINUTES = 60 * 24
 

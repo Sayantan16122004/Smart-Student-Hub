@@ -2,63 +2,64 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const HomeIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M3 11l9-7 9 7" /><path d="M5 10v10h14V10" />
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
+    <path d="M3 11l9-8 9 8" fill="none" strokeWidth="2" strokeLinecap="round" />
+    <path d="M5.5 10.5V20h5v-5.5h3V20h5v-9.5L12 4.5z" />
   </svg>
 );
 const UserIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" />
   </svg>
 );
 const UsersIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="9" cy="8" r="3" /><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6" />
     <circle cx="17" cy="8" r="3" /><path d="M16 14.2c2.9.6 5 2.9 5 5.8" />
   </svg>
 );
 const BookIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M4 4h11a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3V4z" /><path d="M8 8h7" />
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M6 3h9l4 4v14H6z" /><path d="M9 11h7M9 15h7" />
   </svg>
 );
 const CalendarIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M8 3v4M16 3v4M3 10h18" />
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M8 3v4M16 3v4M3 10h18" /><path d="M8 14h2M14 14h2M8 17h2" />
   </svg>
 );
 const BadgeIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="9" r="5" /><path d="M8 14l-2 7 6-3 6 3-2-7" />
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="9" r="5" /><path d="M8 14l-2 7 6-3 6 3-2-7" /><circle cx="12" cy="9" r="1.5" />
   </svg>
 );
 const FileCheckIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M6 3h9l4 4v14H6z" /><path d="M9 13l2 2 4-4" />
   </svg>
 );
 const MessageIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
   </svg>
 );
 const CompassIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="12" r="10" /><path d="M16 8l-2 6-6 2 2-6z" />
   </svg>
 );
 const ChartIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M3 20V10M10 20V4M17 20v-7" />
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <path d="M4 20V11M12 20V4M20 20v-6" fill="none" strokeWidth="3.5" />
   </svg>
 );
 const BellIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6" /><path d="M10 21a2 2 0 0 0 4 0" />
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2">
+    <path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" /><path d="M10 21a2 2 0 0 0 4 0" fill="none" />
   </svg>
 );
 const LogoutIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
     <path d="M16 17l5-5-5-5" /><path d="M21 12H9" />
   </svg>
@@ -72,9 +73,10 @@ const ChevronIcon = ({ open }) => (
   </svg>
 );
 const GradCapIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M2 9l10-5 10 5-10 5-10-5z" />
-    <path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
+  <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round">
+    <path d="M2 9l10-5 10 5-10 5-10-5z" fill="currentColor" fillOpacity="0.25" />
+    <path d="M6 11.5v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
+    <path d="M22 9v6" strokeLinecap="round" />
   </svg>
 );
 
@@ -166,13 +168,13 @@ const NAV = [
   { type: "link", label: "Notifications", to: "/faculty/notifications", icon: BellIcon, badge: 3 },
 ];
 
-function linkClasses(active) {
-  return `group flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-medium transition-all duration-300 ${
-    active
-      ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-600/40"
-      : "text-slate-600 dark:text-slate-300 hover:bg-white/5 hover:translate-x-0.5"
-  }`;
-}
+const rowBase =
+  "outline-none focus:outline-none focus-visible:outline-none focus:ring-0 group flex w-full items-center gap-4 rounded-xl px-4 py-3 text-[15px] font-normal transition-all duration-300";
+const rowIdle =
+  "text-slate-700 dark:text-slate-100 hover:bg-blue-500/10 dark:hover:bg-white/5";
+const rowActive =
+  "bg-gradient-to-r from-[#1d4ed8] to-[#2f6bff] text-white font-medium shadow-[0_0_26px_rgba(47,107,255,0.65)]";
+const iconIdle = "text-blue-500 dark:text-blue-400";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -190,84 +192,95 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col w-80 shrink-0 h-screen sticky top-0 z-20 bg-white/70 dark:bg-white/[0.03] backdrop-blur-2xl border-r border-slate-200 dark:border-white/10 px-4 py-5 overflow-y-auto transition-colors shadow-[0_0_40px_rgba(59,130,246,0.06)]">
-      {/* Logo / brand */}
-      <div className="flex items-center gap-3 px-2 pb-6 mb-4 border-b border-slate-200 dark:border-white/10">
-        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-600/40">
-          <GradCapIcon />
-        </span>
-        <p className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">
-          FACULTY <span className="text-blue-500 dark:text-blue-400">PORTAL</span>
-        </p>
-      </div>
+    <div className="hidden lg:block w-[19rem] shrink-0 h-screen sticky top-0 z-20 p-3">
+      <aside className="flex h-full flex-col rounded-2xl border border-blue-400/40 bg-white/80 dark:bg-[#0a1650] dark:bg-gradient-to-b dark:from-[#09154d]/95 dark:via-[#0a1d6c]/95 dark:to-[#0b2a98]/95 backdrop-blur-2xl px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_40px_rgba(37,99,235,0.35)] transition-colors overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Brand */}
+        <div className="mb-4 flex items-center gap-3 border-b border-blue-400/20 px-2 pb-4">
+          <span className="text-blue-500 dark:text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
+            <GradCapIcon />
+          </span>
+          <p className="text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
+            FACULTY <span className="text-blue-500 dark:text-blue-400">PORTAL</span>
+          </p>
+        </div>
 
-      <nav className="flex-1 space-y-1.5">
-        {NAV.map((item) => {
-          if (item.type === "link") {
+        <nav className="flex-1 space-y-1">
+          {NAV.map((item) => {
             const Icon = item.icon;
+
+            if (item.type === "link") {
+              return (
+                <NavLink
+                  key={item.label}
+                  to={item.to}
+                  end={item.end}
+                  className={({ isActive }) => `${rowBase} ${isActive ? rowActive : rowIdle}`}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span className={isActive ? "text-white" : iconIdle}>
+                        <Icon />
+                      </span>
+                      <span className="flex-1">{item.label}</span>
+                      {!!item.badge && (
+                        <>
+                          <span className="text-slate-400"><ChevronIcon /></span>
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-pink-500 text-[11px] font-semibold text-white shadow-[0_0_10px_rgba(236,72,153,0.7)]">
+                            {item.badge}
+                          </span>
+                        </>
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              );
+            }
+
+            const open = !!openGroups[item.label];
             return (
-              <NavLink
-                key={item.label}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) => linkClasses(isActive)}
-              >
-                <Icon />
-                <span className="flex-1">{item.label}</span>
-                {!!item.badge && (
-                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-semibold text-white animate-pulse">
-                    {item.badge}
-                  </span>
+              <div key={item.label}>
+                <button
+                  type="button"
+                  onClick={() => toggleGroup(item.label)}
+                  className={`${rowBase} ${rowIdle}`}
+                >
+                  <span className={iconIdle}><Icon /></span>
+                  <span className="flex-1 text-left leading-snug">{item.label}</span>
+                  <span className="text-slate-400"><ChevronIcon open={open} /></span>
+                </button>
+                {open && (
+                  <div className="mt-1 ml-7 space-y-1 border-l border-blue-400/20 pl-3 animate-[fadeIn_0.2s_ease-out]">
+                    {item.children.map((child) => (
+                      <NavLink
+                        key={child.to}
+                        to={child.to}
+                        className={({ isActive }) =>
+                          `outline-none focus:outline-none block rounded-lg px-3 py-2 text-sm transition-all duration-300 ${
+                            isActive
+                              ? "bg-blue-500/20 text-slate-900 dark:text-white"
+                              : "text-slate-500 dark:text-slate-400 hover:bg-blue-500/10 hover:text-slate-900 dark:hover:text-slate-100"
+                          }`
+                        }
+                      >
+                        {child.label}
+                      </NavLink>
+                    ))}
+                  </div>
                 )}
-              </NavLink>
+              </div>
             );
-          }
+          })}
 
-          const Icon = item.icon;
-          const open = !!openGroups[item.label];
-          return (
-            <div key={item.label}>
-              <button
-                type="button"
-                onClick={() => toggleGroup(item.label)}
-                className="w-full flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-white/5 transition-all duration-300"
-              >
-                <Icon />
-                <span className="flex-1 text-left">{item.label}</span>
-                <ChevronIcon open={open} />
-              </button>
-              {open && (
-                <div className="mt-1 ml-5 space-y-1 border-l border-slate-200 dark:border-white/10 pl-3 animate-[fadeIn_0.2s_ease-out]">
-                  {item.children.map((child) => (
-                    <NavLink
-                      key={child.to}
-                      to={child.to}
-                      className={({ isActive }) =>
-                        `block rounded-lg px-3 py-2 text-sm transition-all duration-300 ${
-                          isActive
-                            ? "bg-white/10 text-slate-900 dark:text-white"
-                            : "text-slate-500 dark:text-slate-400 hover:bg-white/5 hover:text-slate-900 dark:hover:text-slate-200"
-                        }`
-                      }
-                    >
-                      {child.label}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-medium text-red-500 dark:text-red-400 hover:bg-red-500/10 transition-all duration-300 mt-2"
-        >
-          <LogoutIcon />
-          <span>Logout</span>
-        </button>
-      </nav>
-    </aside>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className={`${rowBase} mt-4 text-pink-500 dark:text-pink-400 hover:bg-pink-500/10`}
+          >
+            <LogoutIcon />
+            <span>Logout</span>
+          </button>
+        </nav>
+      </aside>
+    </div>
   );
 }

@@ -1,40 +1,51 @@
 import { useEffect, useState } from "react";
 
 const SearchIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
   </svg>
 );
 const BellIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6" /><path d="M10 21a2 2 0 0 0 4 0" />
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2">
+    <path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" /><path d="M10 21a2 2 0 0 0 4 0" fill="none" />
   </svg>
 );
 const UserIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" />
   </svg>
 );
 const ChevronDownIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
     <path d="M6 9l6 6 6-6" />
   </svg>
 );
 const SunIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="12" r="4" />
     <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
   </svg>
 );
 const MoonIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2">
     <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
   </svg>
 );
+const SettingsIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
+    <path d="M10.3 2h3.4l.5 2.6a8 8 0 0 1 1.9 1.1l2.5-.9 1.7 3-2 1.7a8 8 0 0 1 0 2.2l2 1.7-1.7 3-2.5-.9a8 8 0 0 1-1.9 1.1l-.5 2.6h-3.4l-.5-2.6a8 8 0 0 1-1.9-1.1l-2.5.9-1.7-3 2-1.7a8 8 0 0 1 0-2.2l-2-1.7 1.7-3 2.5.9a8 8 0 0 1 1.9-1.1z" />
+    <circle cx="12" cy="12" r="3" fill="#0a1436" />
+  </svg>
+);
+
+const noFocus = "outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
+const circleBtn =
+  `${noFocus} relative flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-white/70 dark:bg-[#0a1a55]/60 text-blue-500 dark:text-blue-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(59,130,246,0.3)] backdrop-blur-xl hover:bg-blue-500/25 hover:scale-105 transition-all duration-300`;
 
 export default function Topbar() {
   const fullName = localStorage.getItem("fullName") || "Faculty";
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -46,61 +57,72 @@ export default function Topbar() {
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
-    <header className="sticky top-0 z-20 flex items-center gap-4 px-6 sm:px-8 py-4 bg-white/70 dark:bg-white/[0.03] backdrop-blur-2xl border-b border-slate-200 dark:border-white/10 transition-colors">
-      <div className="flex-1 max-w-xl">
-        <div className="flex items-center gap-3 rounded-full border border-slate-300 dark:border-white/10 bg-slate-100/80 dark:bg-white/5 px-5 py-3 transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-lg focus-within:shadow-blue-500/10">
-          <span className="text-slate-500 dark:text-slate-400"><SearchIcon /></span>
+    <header className="relative z-20 flex items-center gap-4 px-4 sm:px-6 pt-3 pb-1">
+      {/* Search */}
+      <div className="flex-1 max-w-3xl">
+        <div className="flex items-center gap-4 rounded-full border border-blue-400/40 bg-white/70 dark:bg-[#0a1a55]/60 px-6 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_24px_rgba(59,130,246,0.25)] backdrop-blur-xl transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-[0_0_25px_rgba(59,130,246,0.35)]">
+          <span className="text-blue-500 dark:text-blue-300"><SearchIcon /></span>
           <input
             type="text"
             placeholder="Search anything..."
-            className="w-full bg-transparent text-sm text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 outline-none"
+            className="w-full bg-transparent text-[15px] text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-300 outline-none"
           />
         </div>
       </div>
 
-      <button
-        type="button"
-        aria-label="Notifications"
-        className="relative rounded-full p-3 text-slate-600 dark:text-slate-300 bg-slate-100/80 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 hover:scale-105 transition-all duration-300"
-      >
+      <div className="flex-1" />
+
+      {/* Notifications */}
+      <button type="button" aria-label="Notifications" className={circleBtn}>
         <BellIcon />
-        <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-semibold text-white animate-pulse shadow-lg shadow-red-500/50">
+        <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pink-500 text-[11px] font-semibold text-white shadow-[0_0_10px_rgba(236,72,153,0.7)]">
           3
         </span>
       </button>
 
-      {/* Profile chip — swap the icon circle below for <img src="/avatar.jpg" .../> once you have a real photo */}
+      {/* Profile chip */}
       <button
         type="button"
-        className="flex items-center gap-3 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100/80 dark:bg-white/5 pl-2 pr-4 py-2 hover:bg-slate-200 dark:hover:bg-white/10 hover:scale-[1.02] transition-all duration-300"
+        className={`${noFocus} flex items-center gap-3 rounded-full border border-white/15 bg-white/70 dark:bg-[#0a1a55]/60 pl-2 pr-8 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(59,130,246,0.3)] backdrop-blur-xl hover:bg-blue-500/25 transition-all duration-300`}
       >
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-2 ring-blue-400/40 shadow-lg shadow-blue-600/30">
-          <UserIcon />
-        </span>
+        {imgError ? (
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-2 ring-blue-400/50">
+            <UserIcon />
+          </span>
+        ) : (
+          <img
+            src="/avatar.jpg"
+            alt={fullName}
+            onError={() => setImgError(true)}
+            className="h-11 w-11 rounded-full object-cover ring-2 ring-blue-400/50"
+          />
+        )}
         <span className="text-left leading-tight">
-          <span className="flex items-center gap-1 text-sm font-semibold text-slate-900 dark:text-white">
+          <span className="flex items-center gap-2 text-[15px] font-semibold text-slate-900 dark:text-white">
             {fullName}
             <ChevronDownIcon />
           </span>
-          <span className="flex items-center gap-1 text-xs text-emerald-500 dark:text-emerald-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+          <span className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-200">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
             Online
           </span>
         </span>
       </button>
 
+      {/* Theme toggle */}
       <button
         type="button"
         onClick={toggleTheme}
         aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-        className="rounded-full p-3 text-slate-600 dark:text-slate-300 bg-slate-100/80 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 hover:rotate-12 hover:scale-105 transition-all duration-300"
+        className={circleBtn}
       >
         {theme === "dark" ? <MoonIcon /> : <SunIcon />}
       </button>
 
-      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 overflow-hidden shrink-0 ring-2 ring-white/10 shadow-lg shadow-purple-600/30 hover:scale-105 transition-transform duration-300">
-        <img src="/logo.png" alt="College logo" className="h-6 w-6 object-contain" />
-      </span>
+      {/* Settings */}
+      <button type="button" aria-label="Settings" className={circleBtn}>
+        <SettingsIcon />
+      </button>
     </header>
   );
 }

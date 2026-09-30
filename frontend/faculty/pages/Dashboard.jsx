@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const svgProps = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 };
 
@@ -114,59 +114,55 @@ const STATS = [
 
 const ACCENTS = {
   blue: {
-    card: "border-blue-400/35 bg-blue-50 dark:bg-[#0a1a55]/40 dark:bg-gradient-to-br dark:from-[#1d5bff]/30 dark:to-[#0a1a5a]/40",
-    box: "border-blue-400/50 bg-blue-500/25 text-blue-300 shadow-[0_0_18px_rgba(59,130,246,0.5)]",
+    card: "border-blue-400/30 bg-blue-50 dark:bg-[#0a2070]/20 dark:bg-gradient-to-br dark:from-[#1d5bff]/30 dark:to-[#0a1a5a]/30",
+    box: "border-blue-300/40 bg-blue-500/20 text-blue-300 shadow-[0_0_14px_rgba(59,130,246,0.35)]",
     stroke: "#3b82f6",
-    glow: "hover:shadow-[0_0_32px_rgba(59,130,246,0.4)]",
   },
   purple: {
-    card: "border-purple-400/35 bg-purple-50 dark:bg-[#1a1050]/40 dark:bg-gradient-to-br dark:from-[#8b3dff]/30 dark:to-[#221068]/40",
-    box: "border-purple-400/50 bg-purple-500/25 text-purple-200 shadow-[0_0_18px_rgba(168,85,247,0.5)]",
+    card: "border-purple-400/35 bg-purple-50 dark:bg-[#2a1580]/20 dark:bg-gradient-to-br dark:from-[#8b3dff]/30 dark:to-[#1a1058]/30",
+    box: "border-purple-300/40 bg-purple-500/20 text-purple-200 shadow-[0_0_14px_rgba(168,85,247,0.35)]",
     stroke: "#a855f7",
-    glow: "hover:shadow-[0_0_32px_rgba(168,85,247,0.4)]",
   },
   emerald: {
-    card: "border-emerald-400/35 bg-emerald-50 dark:bg-[#07303a]/40 dark:bg-gradient-to-br dark:from-[#10b981]/28 dark:to-[#063a47]/40",
-    box: "border-emerald-400/50 bg-emerald-500/25 text-emerald-300 shadow-[0_0_18px_rgba(16,185,129,0.5)]",
+    card: "border-emerald-400/35 bg-emerald-50 dark:bg-[#0a4a48]/20 dark:bg-gradient-to-br dark:from-[#10b981]/28 dark:to-[#07303c]/30",
+    box: "border-emerald-300/40 bg-emerald-500/20 text-emerald-300 shadow-[0_0_14px_rgba(16,185,129,0.35)]",
     stroke: "#10b981",
-    glow: "hover:shadow-[0_0_32px_rgba(16,185,129,0.4)]",
   },
   amber: {
-    card: "border-amber-400/35 bg-amber-50 dark:bg-[#2a2030]/40 dark:bg-gradient-to-br dark:from-[#f59e0b]/25 dark:to-[#2a1f28]/40",
-    box: "border-amber-400/50 bg-amber-500/25 text-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.5)]",
+    card: "border-amber-400/35 bg-amber-50 dark:bg-[#3a2c18]/20 dark:bg-gradient-to-br dark:from-[#f59e0b]/25 dark:to-[#241f2c]/30",
+    box: "border-amber-300/40 bg-amber-500/20 text-amber-400 shadow-[0_0_14px_rgba(245,158,11,0.35)]",
     stroke: "#f59e0b",
-    glow: "hover:shadow-[0_0_32px_rgba(245,158,11,0.4)]",
   },
 };
 
 const ACTIVITIES = [
-  { icon: UserPlusIcon, tone: "from-blue-400 to-blue-700 shadow-[0_0_18px_rgba(59,130,246,0.7)] ring-blue-300/40", title: "New student registered", detail: "Rahul Das (CSE-2023-24)", time: "2 hours ago" },
-  { icon: CalendarIcon, tone: "from-emerald-400 to-emerald-700 shadow-[0_0_18px_rgba(16,185,129,0.7)] ring-emerald-300/40", title: "Attendance updated", detail: "CSE - 3rd Year (Section A)", time: "4 hours ago" },
-  { icon: AwardIcon, tone: "from-violet-400 to-purple-700 shadow-[0_0_18px_rgba(139,92,246,0.7)] ring-violet-300/40", title: "Achievement verified", detail: "Riya Sharma (CSE-2022-23)", time: "6 hours ago" },
-  { icon: ChatIcon, tone: "from-pink-400 to-rose-700 shadow-[0_0_18px_rgba(236,72,153,0.7)] ring-pink-300/40", title: "New message from student", detail: "Souvik Paul", time: "8 hours ago" },
+  { icon: UserPlusIcon, tone: "from-blue-500 to-blue-700 shadow-[0_0_14px_rgba(59,130,246,0.5)] ring-blue-300/40", title: "New student registered", detail: "Rahul Das (CSE-2023-24)", time: "2 hours ago" },
+  { icon: CalendarIcon, tone: "from-emerald-500 to-emerald-700 shadow-[0_0_14px_rgba(16,185,129,0.5)] ring-emerald-300/40", title: "Attendance updated", detail: "CSE - 3rd Year (Section A)", time: "4 hours ago" },
+  { icon: AwardIcon, tone: "from-violet-500 to-purple-700 shadow-[0_0_14px_rgba(139,92,246,0.5)] ring-violet-300/40", title: "Achievement verified", detail: "Riya Sharma (CSE-2022-23)", time: "6 hours ago" },
+  { icon: ChatIcon, tone: "from-pink-600 to-rose-800 shadow-[0_0_14px_rgba(236,72,153,0.45)] ring-pink-400/50", title: "New message from student", detail: "Souvik Paul", time: "8 hours ago" },
 ];
 
 const QUICK_ACTIONS = [
-  { label: "View Students", icon: UserPlusIcon, card: "from-blue-500/35 via-blue-700/15 to-[#0a1a5a]/30 border-blue-400/40", ico: "from-blue-400 to-blue-700 shadow-[0_0_16px_rgba(59,130,246,0.7)]", arrow: "bg-blue-500/30 text-blue-200" },
-  { label: "Academic Info", icon: GradCapIcon, card: "from-violet-500/35 via-violet-700/15 to-[#1a1050]/30 border-violet-400/40", ico: "from-violet-400 to-purple-700 shadow-[0_0_16px_rgba(139,92,246,0.7)]", arrow: "bg-violet-500/30 text-violet-200" },
-  { label: "Attendance", icon: CalendarIcon, card: "from-emerald-500/35 via-emerald-700/15 to-[#063a47]/30 border-emerald-400/40", ico: "from-emerald-400 to-emerald-700 shadow-[0_0_16px_rgba(16,185,129,0.7)]", arrow: "bg-emerald-500/30 text-emerald-200" },
-  { label: "Performance", icon: BarsIcon, card: "from-amber-500/35 via-amber-700/15 to-[#2a1f28]/30 border-amber-400/40", ico: "from-amber-400 to-amber-600 shadow-[0_0_16px_rgba(245,158,11,0.7)]", arrow: "bg-amber-500/30 text-amber-200" },
-  { label: "Certificates", icon: FileIcon, card: "from-indigo-500/35 via-indigo-700/15 to-[#15105a]/30 border-indigo-400/40", ico: "from-indigo-400 to-indigo-700 shadow-[0_0_16px_rgba(99,102,241,0.7)]", arrow: "bg-indigo-500/30 text-indigo-200" },
-  { label: "Settings", icon: GearIcon, card: "from-pink-500/35 via-pink-700/15 to-[#3a1050]/30 border-pink-400/40", ico: "from-pink-400 to-rose-600 shadow-[0_0_16px_rgba(236,72,153,0.7)]", arrow: "bg-pink-500/30 text-pink-200" },
+  { label: "View Students", icon: UserPlusIcon, card: "from-blue-500/25 to-[#081a55]/40 border-blue-300/30", ico: "from-blue-500 to-blue-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]", arrow: "bg-blue-500/25 text-blue-200" },
+  { label: "Academic Info", icon: GradCapIcon, card: "from-violet-500/25 to-[#170f4a]/40 border-violet-300/30", ico: "from-violet-500 to-purple-700 shadow-[0_0_12px_rgba(139,92,246,0.5)]", arrow: "bg-violet-500/25 text-violet-200" },
+  { label: "Attendance", icon: CalendarIcon, card: "from-emerald-500/25 to-[#06303c]/40 border-emerald-300/30", ico: "from-emerald-500 to-emerald-700 shadow-[0_0_12px_rgba(16,185,129,0.5)]", arrow: "bg-emerald-500/25 text-emerald-200" },
+  { label: "Performance", icon: BarsIcon, card: "from-amber-500/25 to-[#241f2c]/40 border-amber-300/30", ico: "from-amber-500 to-amber-700 shadow-[0_0_12px_rgba(245,158,11,0.5)]", arrow: "bg-amber-500/25 text-amber-200" },
+  { label: "Certificates", icon: FileIcon, card: "from-indigo-500/25 to-[#15105a]/40 border-indigo-300/30", ico: "from-indigo-500 to-indigo-700 shadow-[0_0_12px_rgba(99,102,241,0.5)]", arrow: "bg-indigo-500/25 text-indigo-200" },
+  { label: "Settings", icon: GearIcon, card: "from-pink-500/25 to-[#33104a]/40 border-pink-300/30", ico: "from-pink-500 to-rose-700 shadow-[0_0_12px_rgba(236,72,153,0.5)]", arrow: "bg-pink-500/25 text-pink-200" },
 ];
 
 const NOTICES = [
-  { day: "25", month: "Sep", title: "Internal Assessment", detail: "CSE - 3rd Year", tone: "from-blue-500 to-blue-700 shadow-[0_0_14px_rgba(59,130,246,0.6)]" },
-  { day: "28", month: "Sep", title: "Department Meeting", detail: "Room 204 | 11:00 AM", tone: "from-violet-500 to-indigo-700 shadow-[0_0_14px_rgba(139,92,246,0.6)]" },
-  { day: "02", month: "Oct", title: "Result Declaration", detail: "Session 2025-26", tone: "from-emerald-500 to-teal-700 shadow-[0_0_14px_rgba(16,185,129,0.6)]" },
-  { title: "Notice", detail: "Fill attendance before 30 Sep", tone: "from-amber-400 to-amber-600 shadow-[0_0_14px_rgba(245,158,11,0.6)]", isNotice: true },
+  { day: "25", month: "Sep", title: "Internal Assessment", detail: "CSE - 3rd Year", tone: "from-blue-600 to-blue-800 shadow-[0_0_12px_rgba(59,130,246,0.45)]" },
+  { day: "28", month: "Sep", title: "Department Meeting", detail: "Room 204 | 11:00 AM", tone: "from-violet-600 to-indigo-800 shadow-[0_0_12px_rgba(139,92,246,0.45)]" },
+  { day: "02", month: "Oct", title: "Result Declaration", detail: "Session 2025-26", tone: "from-emerald-600 to-teal-800 shadow-[0_0_12px_rgba(16,185,129,0.45)]" },
+  { title: "Notice", detail: "Fill attendance before 30 Sep", tone: "from-amber-500 to-amber-700 shadow-[0_0_12px_rgba(245,158,11,0.45)]", isNotice: true },
 ];
 
 /* ---------- pieces ---------- */
 
-function Sparkline({ color }) {
+function Sparkline({ color, delay = 0 }) {
   return (
-    <svg viewBox="0 0 100 40" className="h-10 w-24" preserveAspectRatio="none" style={{ filter: `drop-shadow(0 0 5px ${color})` }}>
+    <svg viewBox="0 0 100 40" className="anim-reveal h-10 w-24" preserveAspectRatio="none" style={{ filter: `drop-shadow(0 0 4px ${color})`, "--d": `${delay}ms` }}>
       <path
         d="M0,34 C8,32 12,36 20,28 S32,22 40,26 S52,32 60,22 S76,6 84,14 S94,10 100,4"
         fill="none"
@@ -179,16 +175,20 @@ function Sparkline({ color }) {
   );
 }
 
-/* Glass card: translucent navy + blur + soft light border + inner top highlight */
-function Card({ className = "", tint = "", children }) {
+/* Glass card: dark translucent navy + blur + soft light border + inner top highlight */
+function Card({ className = "", tint = "", glow = false, delay = 0, children }) {
   const base =
     tint ||
-    "border-white/10 bg-white/70 dark:bg-[#0a1a55]/35 dark:bg-gradient-to-br dark:from-[#1a3fbf]/15 dark:to-transparent";
+    "border-blue-300/20 bg-white/60 dark:bg-[#0a1a55]/30 dark:bg-gradient-to-br dark:from-[#1a3fbf]/12 dark:to-transparent";
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_10px_40px_rgba(0,0,0,0.45)] transition-shadow duration-300 ${base} ${className}`}
+      style={{ "--d": `${delay}ms` }}
+      className={`anim-rise group relative overflow-hidden rounded-2xl border backdrop-blur-[6px] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-300/45 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_16px_44px_rgba(37,99,235,0.3)] ${base} ${className}`}
     >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent" />
+      {glow && (
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(37,99,235,0.4),transparent_60%)]" />
+      )}
       <div className="relative h-full">{children}</div>
     </div>
   );
@@ -197,7 +197,7 @@ function Card({ className = "", tint = "", children }) {
 function SectionTitle({ icon: Icon, children, viewAll }) {
   return (
     <div className="mb-3 flex shrink-0 items-center justify-between">
-      <h2 className="flex items-center gap-3 text-[17px] font-semibold text-slate-900 dark:text-white">
+      <h2 className="flex items-center gap-3 text-base font-semibold text-slate-900 dark:text-white">
         <span className="text-blue-500 dark:text-blue-300"><Icon /></span>
         {children}
       </h2>
@@ -217,6 +217,33 @@ function formatToday(d) {
   return `${wk}, ${dd} ${mon} ${d.getFullYear()}`;
 }
 
+function CountUp({ value, duration = 1200 }) {
+  const m = String(value).match(/^(\d+)(.*)$/);
+  const target = m ? parseInt(m[1], 10) : 0;
+  const suffix = m ? m[2] : "";
+  const [n, setN] = useState(0);
+
+  useEffect(() => {
+    if (!m) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setN(target);
+      return;
+    }
+    let raf;
+    let start;
+    const step = (t) => {
+      if (!start) start = t;
+      const p = Math.min((t - start) / duration, 1);
+      setN(Math.round(target * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return <>{m ? `${n}${suffix}` : value}</>;
+}
+
 /* ---------- page ---------- */
 
 export default function Dashboard() {
@@ -229,13 +256,13 @@ export default function Dashboard() {
     .split(" ");
 
   return (
-    <div className="relative flex min-h-full flex-col gap-4 p-4 sm:p-6 sm:pt-4 lg:h-full">
+    <div className="relative flex min-h-full flex-col gap-5 px-4 pb-6 pt-4 lg:h-full lg:pb-8 lg:pl-4 lg:pr-3 lg:pt-5">
       {/* Welcome + Today */}
-      <div className="grid shrink-0 grid-cols-1 gap-4 lg:grid-cols-[1fr_20rem]">
-        <Card tint="border-blue-400/35 bg-blue-50 dark:bg-[#0a1a55]/40 dark:bg-gradient-to-r dark:from-[#1d5bff]/30 dark:via-[#0f2a9a]/20 dark:to-[#0a1a5a]/30">
-          <div className="flex items-center gap-6 p-5 sm:px-7 sm:py-5">
+      <div className="grid shrink-0 grid-cols-1 gap-5 lg:h-[9.4rem] lg:grid-cols-[1fr_18.6rem]">
+        <Card glow delay={0} tint="border-blue-300/25 bg-blue-50 dark:bg-[#0a1a55]/30 dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:via-[#0c2080]/25 dark:to-[#0b1f75]/30">
+          <div className="flex h-full items-center gap-6 px-7">
             {imgError ? (
-              <span className="hidden sm:flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-400/60 shadow-[0_0_40px_rgba(59,130,246,0.75)]">
+              <span className="hidden sm:flex h-[6.5rem] w-[6.5rem] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-400/60 shadow-[0_0_36px_rgba(59,130,246,0.7)]">
                 <UsersIcon size={40} />
               </span>
             ) : (
@@ -243,37 +270,37 @@ export default function Dashboard() {
                 src="/avatar.jpg"
                 alt={fullName}
                 onError={() => setImgError(true)}
-                className="hidden sm:block h-20 w-20 shrink-0 rounded-full object-cover ring-4 ring-blue-400/60 shadow-[0_0_40px_rgba(59,130,246,0.75)]"
+                className="hidden sm:block h-[6.5rem] w-[6.5rem] shrink-0 rounded-full object-cover ring-4 ring-blue-400/60 shadow-[0_0_36px_rgba(59,130,246,0.7)]"
               />
             )}
             <div className="min-w-0 flex-1">
-              <p className="text-lg text-slate-600 dark:text-slate-100">Welcome back,</p>
-              <h1 className="flex flex-wrap items-center gap-2 text-3xl font-bold text-slate-900 dark:text-white sm:text-4xl">
+              <p className="text-base text-slate-600 dark:text-slate-100">Welcome back,</p>
+              <h1 className="flex flex-wrap items-center gap-2 text-3xl font-semibold text-slate-900 dark:text-white">
                 {fullName}
-                <span className="text-blue-500 dark:text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]"><CheckBadgeIcon size={28} /></span>
+                <span className="text-blue-500 dark:text-blue-400"><CheckBadgeIcon size={26} /></span>
               </h1>
-              <p className="mt-2 flex items-center gap-3 text-base text-slate-600 dark:text-slate-100">
+              <p className="mt-1.5 flex items-center gap-3 text-[15px] text-slate-600 dark:text-slate-100">
                 Together towards better education
                 <span className="hidden h-[3px] w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 shadow-[0_0_8px_rgba(59,130,246,0.9)] sm:block" />
               </p>
             </div>
-            <div className="hidden max-w-[17rem] text-sm italic leading-relaxed text-slate-600 dark:text-slate-200 xl:block">
+            <div className="hidden max-w-[19rem] text-[15px] italic leading-relaxed text-slate-600 dark:text-slate-200 xl:block">
               <p>"Education is the most powerful weapon which you can use to change the world."</p>
               <p className="mt-3 not-italic text-slate-500 dark:text-slate-200">— Nelson Mandela</p>
             </div>
           </div>
         </Card>
 
-        <Card tint="border-blue-400/35 bg-blue-50 dark:bg-[#0a1a55]/40 dark:bg-gradient-to-br dark:from-[#1d5bff]/25 dark:to-[#0a1a5a]/40">
-          <div className="flex h-full items-center gap-4 p-5">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-blue-400/50 bg-blue-500/25 text-blue-300 shadow-[0_0_22px_rgba(59,130,246,0.55)]">
+        <Card glow delay={80} tint="border-blue-300/25 bg-blue-50 dark:bg-[#0a1a55]/30 dark:bg-gradient-to-br dark:from-[#1346d0]/35 dark:to-[#0c2080]/25">
+          <div className="flex h-full items-center gap-4 px-6">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-blue-300/40 bg-blue-500/20 text-blue-300 shadow-[0_0_18px_rgba(59,130,246,0.45)]">
               <CalendarIcon size={26} />
             </span>
             <div>
               <p className="text-sm text-slate-500 dark:text-slate-200">Today</p>
-              <p className="font-medium text-slate-900 dark:text-white">{dateStr}</p>
-              <p className="mt-1.5 text-3xl font-bold text-slate-900 dark:text-white">
-                {time} <span className="text-lg font-medium text-slate-500 dark:text-slate-100">{meridiem}</span>
+              <p className="text-[15px] font-medium text-slate-900 dark:text-white">{dateStr}</p>
+              <p className="mt-1 text-[28px] font-semibold leading-tight text-slate-900 dark:text-white">
+                {time} <span className="text-base font-medium text-slate-500 dark:text-slate-100">{meridiem}</span>
               </p>
             </div>
           </div>
@@ -281,26 +308,26 @@ export default function Dashboard() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid shrink-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {STATS.map((s) => {
+      <div className="grid shrink-0 grid-cols-1 gap-5 sm:grid-cols-2 lg:h-[7.8rem] xl:grid-cols-4">
+        {STATS.map((s, i) => {
           const Icon = s.icon;
           const a = ACCENTS[s.accent];
           return (
-            <Card key={s.label} tint={a.card} className={a.glow}>
-              <div className="relative flex min-h-[7rem] items-center gap-4 p-4">
-                <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${a.box}`}>
+            <Card key={s.label} tint={a.card} delay={160 + i * 80}>
+              <div className="relative flex h-full min-h-[7rem] items-center gap-4 px-5">
+                <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border transition-transform duration-300 group-hover:scale-110 ${a.box}`}>
                   <Icon />
                 </span>
                 <div className="min-w-0">
                   <p className="whitespace-nowrap text-sm text-slate-600 dark:text-slate-100">{s.label}</p>
-                  <p className="text-[28px] font-bold leading-tight text-slate-900 dark:text-white">{s.value}</p>
-                  <span className="flex items-center gap-1 text-xs font-semibold text-emerald-500 dark:text-emerald-400">
+                  <p className="text-[26px] font-semibold leading-tight text-slate-900 dark:text-white"><CountUp value={s.value} /></p>
+                  <span className="flex items-center gap-1 text-xs font-medium text-emerald-500 dark:text-emerald-400">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20V4M5 11l7-7 7 7" /></svg>
                     {s.change}
                   </span>
                 </div>
-                <div className="absolute bottom-3 right-4">
-                  <Sparkline color={a.stroke} />
+                <div className="absolute bottom-4 right-4">
+                  <Sparkline color={a.stroke} delay={400 + i * 80} />
                 </div>
               </div>
             </Card>
@@ -309,24 +336,24 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom row */}
-      <div className="grid grid-cols-1 gap-4 lg:min-h-0 lg:flex-1 lg:grid-rows-[minmax(0,1fr)] lg:grid-cols-[1.15fr_1.2fr_0.9fr]">
+      <div className="grid grid-cols-1 gap-5 lg:min-h-0 lg:flex-1 lg:grid-rows-[minmax(0,1fr)] lg:grid-cols-[1.5fr_1.27fr_1fr]">
         {/* Recent Activities */}
-        <Card>
+        <Card delay={480}>
           <div className="flex h-full min-h-0 flex-col p-5">
             <SectionTitle icon={ClockIcon} viewAll>Recent Activities</SectionTitle>
             <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">
               {ACTIVITIES.map((a) => {
                 const Icon = a.icon;
                 return (
-                  <div key={a.title} className="flex flex-1 items-center gap-4 py-2">
-                    <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white ring-2 ${a.tone}`}>
-                      <Icon />
+                  <div key={a.title} className="group/row flex flex-1 items-center gap-4 py-1.5 transition-colors hover:bg-white/[0.04]">
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white ring-2 transition-transform duration-300 group-hover/row:scale-110 ${a.tone}`}>
+                      <Icon size={20} />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{a.title}</p>
-                      <p className="truncate text-xs text-slate-500 dark:text-slate-300">{a.detail}</p>
+                      <p className="truncate text-[13px] font-medium text-slate-900 dark:text-white">{a.title}</p>
+                      <p className="truncate text-[11px] text-slate-500 dark:text-slate-300">{a.detail}</p>
                     </div>
-                    <span className="shrink-0 text-xs text-slate-500 dark:text-slate-300">{a.time}</span>
+                    <span className="shrink-0 text-[11px] text-slate-500 dark:text-slate-300">{a.time}</span>
                   </div>
                 );
               })}
@@ -335,7 +362,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Quick Actions */}
-        <Card>
+        <Card delay={560}>
           <div className="flex h-full min-h-0 flex-col p-5">
             <SectionTitle icon={BoltIcon}>Quick Actions</SectionTitle>
             <div className="grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-3">
@@ -345,13 +372,13 @@ export default function Dashboard() {
                   <button
                     key={a.label}
                     type="button"
-                    className={`outline-none focus:outline-none focus-visible:outline-none flex items-center gap-3 rounded-xl border bg-gradient-to-br ${a.card} px-3 py-2 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl transition-all duration-300 hover:brightness-125`}
+                    className={`group outline-none focus:outline-none focus-visible:outline-none flex items-center gap-3 rounded-xl border bg-gradient-to-br ${a.card} px-3 py-1.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-125 hover:shadow-[0_8px_24px_rgba(59,130,246,0.3)]`}
                   >
-                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white ${a.ico}`}>
-                      <Icon size={22} />
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white transition-transform duration-300 group-hover:scale-110 ${a.ico}`}>
+                      <Icon size={20} />
                     </span>
-                    <span className="min-w-0 flex-1 pt-3 text-xs text-slate-800 dark:text-slate-100">{a.label}</span>
-                    <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${a.arrow}`}>
+                    <span className="min-w-0 flex-1 pt-3 text-[11px] text-slate-800 dark:text-slate-100">{a.label}</span>
+                    <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-0.5 ${a.arrow}`}>
                       <ArrowRightIcon size={13} />
                     </span>
                   </button>
@@ -362,27 +389,27 @@ export default function Dashboard() {
         </Card>
 
         {/* Calendar & Notices */}
-        <Card>
+        <Card delay={640}>
           <div className="flex h-full min-h-0 flex-col p-5">
             <SectionTitle icon={CalendarIcon} viewAll>Calendar &amp; Notices</SectionTitle>
             <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">
               {NOTICES.map((n, i) => (
-                <div key={i} className="flex flex-1 items-center gap-3 py-2">
+                <div key={i} className="group/row flex flex-1 items-center gap-3 py-1.5 transition-colors hover:bg-white/[0.04]">
                   {n.isNotice ? (
-                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white ${n.tone}`}>
-                      <MegaphoneIcon />
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white transition-transform duration-300 group-hover/row:scale-110 ${n.tone}`}>
+                      <MegaphoneIcon size={20} />
                     </span>
                   ) : (
-                    <span className={`flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-lg bg-gradient-to-br text-white ${n.tone}`}>
-                      <span className="text-base font-bold leading-none">{n.day}</span>
+                    <span className={`flex h-10 w-10 shrink-0 flex-col items-center justify-center rounded-lg bg-gradient-to-br text-white transition-transform duration-300 group-hover/row:scale-110 ${n.tone}`}>
+                      <span className="text-base font-semibold leading-none">{n.day}</span>
                       <span className="mt-0.5 text-[10px] leading-none">{n.month}</span>
                     </span>
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{n.title}</p>
-                    <p className="truncate text-xs text-slate-500 dark:text-slate-300">{n.detail}</p>
+                    <p className="truncate text-[13px] font-medium text-slate-900 dark:text-white">{n.title}</p>
+                    <p className="truncate text-[11px] text-slate-500 dark:text-slate-300">{n.detail}</p>
                   </div>
-                  <ChevronRightIcon className="shrink-0 text-slate-400 dark:text-slate-200" />
+                  <ChevronRightIcon className="shrink-0 text-slate-400 transition-transform duration-300 group-hover/row:translate-x-1 dark:text-slate-200" />
                 </div>
               ))}
             </div>

@@ -40,7 +40,7 @@ const SettingsIcon = () => (
 
 const noFocus = "outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
 const circleBtn =
-  `${noFocus} relative flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-white/70 dark:bg-[#0a1a55]/60 text-blue-500 dark:text-blue-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(59,130,246,0.3)] backdrop-blur-xl hover:bg-blue-500/25 hover:scale-105 transition-all duration-300`;
+  `${noFocus} relative flex h-12 w-12 items-center justify-center rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 text-blue-500 dark:text-blue-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 hover:scale-105 hover:-translate-y-0.5 hover:border-blue-300/40 transition-all duration-300`;
 
 export default function Topbar() {
   const fullName = localStorage.getItem("fullName") || "Faculty";
@@ -57,10 +57,10 @@ export default function Topbar() {
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
-    <header className="relative z-20 flex items-center gap-4 px-4 sm:px-6 pt-3 pb-1">
+    <header className="anim-drop-in relative z-20 flex items-center gap-4 px-4 sm:px-6 pt-3 pb-1">
       {/* Search */}
       <div className="flex-1 max-w-3xl">
-        <div className="flex items-center gap-4 rounded-full border border-blue-400/40 bg-white/70 dark:bg-[#0a1a55]/60 px-6 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_24px_rgba(59,130,246,0.25)] backdrop-blur-xl transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-[0_0_25px_rgba(59,130,246,0.35)]">
+        <div className="flex items-center gap-4 rounded-full border border-blue-400/40 bg-white/70 dark:bg-[#0a1a55]/30 px-6 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_16px_rgba(59,130,246,0.18)] backdrop-blur-[6px] transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-[0_0_25px_rgba(59,130,246,0.35)]">
           <span className="text-blue-500 dark:text-blue-300"><SearchIcon /></span>
           <input
             type="text"
@@ -83,7 +83,7 @@ export default function Topbar() {
       {/* Profile chip */}
       <button
         type="button"
-        className={`${noFocus} flex items-center gap-3 rounded-full border border-white/15 bg-white/70 dark:bg-[#0a1a55]/60 pl-2 pr-8 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(59,130,246,0.3)] backdrop-blur-xl hover:bg-blue-500/25 transition-all duration-300`}
+        className={`${noFocus} flex items-center gap-3 rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 pl-2 pr-8 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 transition-all duration-300`}
       >
         {imgError ? (
           <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-2 ring-blue-400/50">
@@ -103,7 +103,7 @@ export default function Topbar() {
             <ChevronDownIcon />
           </span>
           <span className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-200">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
             Online
           </span>
         </span>

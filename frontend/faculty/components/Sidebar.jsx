@@ -169,11 +169,11 @@ const NAV = [
 ];
 
 const rowBase =
-  "outline-none focus:outline-none focus-visible:outline-none focus:ring-0 group flex w-full items-center gap-4 rounded-xl px-4 py-2.5 text-[15px] font-normal transition-all duration-300";
+  "outline-none focus:outline-none focus-visible:outline-none focus:ring-0 group flex w-full items-center gap-4 rounded-xl px-4 py-2.5 text-sm font-normal transition-all duration-300";
 const rowIdle =
-  "text-slate-700 dark:text-slate-100 hover:bg-blue-500/10 dark:hover:bg-white/5";
+  "text-slate-700 dark:text-slate-100 hover:translate-x-1 hover:bg-blue-500/15 dark:hover:bg-white/[0.07]";
 const rowActive =
-  "bg-gradient-to-r from-[#1d4ed8] to-[#2f6bff] text-white font-medium shadow-[0_0_26px_rgba(47,107,255,0.65)]";
+  "bg-gradient-to-r from-[#1d4ed8] to-[#2b63f0] text-white font-medium shadow-[0_0_22px_rgba(43,99,240,0.55)]";
 const iconIdle = "text-blue-500 dark:text-blue-400";
 
 export default function Sidebar() {
@@ -192,20 +192,20 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="hidden lg:block w-[19rem] shrink-0 h-full z-20 p-3">
-      <aside className="flex h-full flex-col rounded-2xl border border-blue-400/40 bg-white/80 dark:bg-[#0a1650] dark:bg-gradient-to-b dark:from-[#09154d]/95 dark:via-[#0a1d6c]/95 dark:to-[#0b2a98]/95 backdrop-blur-2xl px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_40px_rgba(37,99,235,0.35)] transition-colors overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div className="hidden lg:block w-[19.5rem] shrink-0 h-full z-20 p-3">
+      <aside className="anim-slide-in flex h-full flex-col rounded-2xl border border-blue-300/30 bg-white/70 dark:bg-[#0a1650]/40 dark:bg-gradient-to-b dark:from-[#081445]/75 dark:via-[#0a1d60]/55 dark:to-[#0b2a80]/60 backdrop-blur-[6px] px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_40px_rgba(37,99,235,0.25)] transition-colors overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Brand */}
         <div className="mb-4 flex items-center gap-3 border-b border-blue-400/20 px-2 pb-4">
           <span className="text-blue-500 dark:text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
             <GradCapIcon />
           </span>
-          <p className="text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
+          <p className="text-[22px] font-semibold tracking-tight text-slate-900 dark:text-white">
             FACULTY <span className="text-blue-500 dark:text-blue-400">PORTAL</span>
           </p>
         </div>
 
         <nav className="flex-1 space-y-1">
-          {NAV.map((item) => {
+          {NAV.map((item, idx) => {
             const Icon = item.icon;
 
             if (item.type === "link") {
@@ -214,7 +214,8 @@ export default function Sidebar() {
                   key={item.label}
                   to={item.to}
                   end={item.end}
-                  className={({ isActive }) => `${rowBase} ${isActive ? rowActive : rowIdle}`}
+                  style={{ "--d": `${120 + idx * 45}ms` }}
+                  className={({ isActive }) => `anim-slide-in ${rowBase} ${isActive ? rowActive : rowIdle}`}
                 >
                   {({ isActive }) => (
                     <>
@@ -238,7 +239,7 @@ export default function Sidebar() {
 
             const open = !!openGroups[item.label];
             return (
-              <div key={item.label}>
+              <div key={item.label} className="anim-slide-in" style={{ "--d": `${120 + idx * 45}ms` }}>
                 <button
                   type="button"
                   onClick={() => toggleGroup(item.label)}
@@ -274,7 +275,8 @@ export default function Sidebar() {
           <button
             type="button"
             onClick={handleLogout}
-            className={`${rowBase} mt-4 text-pink-500 dark:text-pink-400 hover:bg-pink-500/10`}
+            style={{ "--d": `${120 + NAV.length * 45}ms` }}
+            className={`anim-slide-in ${rowBase} mt-4 text-pink-500 dark:text-pink-400 hover:bg-pink-500/10`}
           >
             <LogoutIcon />
             <span>Logout</span>

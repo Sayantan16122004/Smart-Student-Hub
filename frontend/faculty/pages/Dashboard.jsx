@@ -166,7 +166,7 @@ const NOTICES = [
 
 function Sparkline({ color }) {
   return (
-    <svg viewBox="0 0 100 40" className="h-12 w-28" preserveAspectRatio="none" style={{ filter: `drop-shadow(0 0 5px ${color})` }}>
+    <svg viewBox="0 0 100 40" className="h-10 w-24" preserveAspectRatio="none" style={{ filter: `drop-shadow(0 0 5px ${color})` }}>
       <path
         d="M0,34 C8,32 12,36 20,28 S32,22 40,26 S52,32 60,22 S76,6 84,14 S94,10 100,4"
         fill="none"
@@ -196,7 +196,7 @@ function Card({ className = "", tint = "", children }) {
 
 function SectionTitle({ icon: Icon, children, viewAll }) {
   return (
-    <div className="mb-4 flex items-center justify-between">
+    <div className="mb-3 flex shrink-0 items-center justify-between">
       <h2 className="flex items-center gap-3 text-[17px] font-semibold text-slate-900 dark:text-white">
         <span className="text-blue-500 dark:text-blue-300"><Icon /></span>
         {children}
@@ -229,13 +229,13 @@ export default function Dashboard() {
     .split(" ");
 
   return (
-    <div className="relative space-y-5 p-4 sm:p-6 sm:pt-4">
+    <div className="relative flex min-h-full flex-col gap-4 p-4 sm:p-6 sm:pt-4 lg:h-full">
       {/* Welcome + Today */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_20rem]">
+      <div className="grid shrink-0 grid-cols-1 gap-4 lg:grid-cols-[1fr_20rem]">
         <Card tint="border-blue-400/35 bg-blue-50 dark:bg-[#0a1a55]/40 dark:bg-gradient-to-r dark:from-[#1d5bff]/30 dark:via-[#0f2a9a]/20 dark:to-[#0a1a5a]/30">
-          <div className="flex items-center gap-6 p-6 sm:px-8 sm:py-7">
+          <div className="flex items-center gap-6 p-5 sm:px-7 sm:py-5">
             {imgError ? (
-              <span className="hidden sm:flex h-[6.5rem] w-[6.5rem] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-400/60 shadow-[0_0_40px_rgba(59,130,246,0.75)]">
+              <span className="hidden sm:flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-400/60 shadow-[0_0_40px_rgba(59,130,246,0.75)]">
                 <UsersIcon size={40} />
               </span>
             ) : (
@@ -243,7 +243,7 @@ export default function Dashboard() {
                 src="/avatar.jpg"
                 alt={fullName}
                 onError={() => setImgError(true)}
-                className="hidden sm:block h-[6.5rem] w-[6.5rem] shrink-0 rounded-full object-cover ring-4 ring-blue-400/60 shadow-[0_0_40px_rgba(59,130,246,0.75)]"
+                className="hidden sm:block h-20 w-20 shrink-0 rounded-full object-cover ring-4 ring-blue-400/60 shadow-[0_0_40px_rgba(59,130,246,0.75)]"
               />
             )}
             <div className="min-w-0 flex-1">
@@ -265,7 +265,7 @@ export default function Dashboard() {
         </Card>
 
         <Card tint="border-blue-400/35 bg-blue-50 dark:bg-[#0a1a55]/40 dark:bg-gradient-to-br dark:from-[#1d5bff]/25 dark:to-[#0a1a5a]/40">
-          <div className="flex h-full items-center gap-4 p-6">
+          <div className="flex h-full items-center gap-4 p-5">
             <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-blue-400/50 bg-blue-500/25 text-blue-300 shadow-[0_0_22px_rgba(59,130,246,0.55)]">
               <CalendarIcon size={26} />
             </span>
@@ -281,14 +281,14 @@ export default function Dashboard() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid shrink-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {STATS.map((s) => {
           const Icon = s.icon;
           const a = ACCENTS[s.accent];
           return (
             <Card key={s.label} tint={a.card} className={a.glow}>
-              <div className="relative flex min-h-[8.5rem] items-center gap-4 p-5">
-                <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border ${a.box}`}>
+              <div className="relative flex min-h-[7rem] items-center gap-4 p-4">
+                <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${a.box}`}>
                   <Icon />
                 </span>
                 <div className="min-w-0">
@@ -309,16 +309,16 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom row */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1.15fr_1.2fr_0.9fr]">
+      <div className="grid grid-cols-1 gap-4 lg:min-h-0 lg:flex-1 lg:grid-rows-[minmax(0,1fr)] lg:grid-cols-[1.15fr_1.2fr_0.9fr]">
         {/* Recent Activities */}
         <Card>
-          <div className="p-5">
+          <div className="flex h-full min-h-0 flex-col p-5">
             <SectionTitle icon={ClockIcon} viewAll>Recent Activities</SectionTitle>
-            <div className="divide-y divide-white/10">
+            <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">
               {ACTIVITIES.map((a) => {
                 const Icon = a.icon;
                 return (
-                  <div key={a.title} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
+                  <div key={a.title} className="flex flex-1 items-center gap-4 py-2">
                     <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white ring-2 ${a.tone}`}>
                       <Icon />
                     </span>
@@ -336,16 +336,16 @@ export default function Dashboard() {
 
         {/* Quick Actions */}
         <Card>
-          <div className="p-5">
+          <div className="flex h-full min-h-0 flex-col p-5">
             <SectionTitle icon={BoltIcon}>Quick Actions</SectionTitle>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-3">
               {QUICK_ACTIONS.map((a) => {
                 const Icon = a.icon;
                 return (
                   <button
                     key={a.label}
                     type="button"
-                    className={`outline-none focus:outline-none focus-visible:outline-none flex items-center gap-3 rounded-xl border bg-gradient-to-br ${a.card} px-3 py-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl transition-all duration-300 hover:brightness-125`}
+                    className={`outline-none focus:outline-none focus-visible:outline-none flex items-center gap-3 rounded-xl border bg-gradient-to-br ${a.card} px-3 py-2 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl transition-all duration-300 hover:brightness-125`}
                   >
                     <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white ${a.ico}`}>
                       <Icon size={22} />
@@ -363,11 +363,11 @@ export default function Dashboard() {
 
         {/* Calendar & Notices */}
         <Card>
-          <div className="p-5">
+          <div className="flex h-full min-h-0 flex-col p-5">
             <SectionTitle icon={CalendarIcon} viewAll>Calendar &amp; Notices</SectionTitle>
-            <div className="divide-y divide-white/10">
+            <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">
               {NOTICES.map((n, i) => (
-                <div key={i} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+                <div key={i} className="flex flex-1 items-center gap-3 py-2">
                   {n.isNotice ? (
                     <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white ${n.tone}`}>
                       <MegaphoneIcon />

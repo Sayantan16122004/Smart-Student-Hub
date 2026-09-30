@@ -4,7 +4,7 @@ import Topbar from "./components/Topbar";
 
 export default function FacultyLayout() {
   return (
-    <div className="relative flex min-h-screen bg-slate-100 dark:bg-[#030817] transition-colors overflow-hidden">
+    <div className="relative flex h-screen overflow-hidden bg-slate-100 dark:bg-[#030817] transition-colors">
       {/* Ambient glow blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/4 h-[32rem] w-[32rem] rounded-full bg-blue-600/30 blur-[130px]" />
@@ -13,9 +13,10 @@ export default function FacultyLayout() {
       </div>
 
       <Sidebar />
-      <div className="relative flex-1 flex flex-col min-w-0">
+      <div className="relative flex h-full min-w-0 flex-1 flex-col">
         <Topbar />
-        <main className="flex-1 relative">
+        {/* No page scroll: Dashboard fits the screen. Other long pages scroll inside here (scrollbar hidden). */}
+        <main className="relative min-h-0 flex-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Outlet />
         </main>
       </div>

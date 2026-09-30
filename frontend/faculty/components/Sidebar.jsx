@@ -169,7 +169,7 @@ const NAV = [
 ];
 
 const rowBase =
-  "outline-none focus:outline-none focus-visible:outline-none focus:ring-0 group flex w-full items-center gap-4 rounded-xl px-4 py-3 text-[15px] font-normal transition-all duration-300";
+  "outline-none focus:outline-none focus-visible:outline-none focus:ring-0 group flex w-full items-center gap-4 rounded-xl px-4 py-2.5 text-[15px] font-normal transition-all duration-300";
 const rowIdle =
   "text-slate-700 dark:text-slate-100 hover:bg-blue-500/10 dark:hover:bg-white/5";
 const rowActive =
@@ -192,7 +192,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="hidden lg:block w-[19rem] shrink-0 h-screen sticky top-0 z-20 p-3">
+    <div className="hidden lg:block w-[19rem] shrink-0 h-full z-20 p-3">
       <aside className="flex h-full flex-col rounded-2xl border border-blue-400/40 bg-white/80 dark:bg-[#0a1650] dark:bg-gradient-to-b dark:from-[#09154d]/95 dark:via-[#0a1d6c]/95 dark:to-[#0b2a98]/95 backdrop-blur-2xl px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_40px_rgba(37,99,235,0.35)] transition-colors overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Brand */}
         <div className="mb-4 flex items-center gap-3 border-b border-blue-400/20 px-2 pb-4">

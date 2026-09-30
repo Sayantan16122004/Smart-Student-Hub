@@ -83,7 +83,7 @@ export default function Topbar() {
       {/* Profile chip */}
       <button
         type="button"
-        className={`${noFocus} flex min-w-[220px] items-center gap-3 rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 pl-2 pr-5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 transition-all duration-300`}
+        className={`${noFocus} flex items-center gap-3 rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 pl-2 pr-5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 transition-all duration-300`}
       >
         {imgError ? (
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-2 ring-blue-400/50">

@@ -138,13 +138,13 @@ function SectionTitle({ icon: Icon, children }) {
 
 function InfoRows({ rows, roomy = false }) {
   return (
-    <div className="flex flex-col divide-y divide-slate-300/40 border-t border-slate-300/40 dark:divide-blue-300/10 dark:border-blue-300/10">
+    <div className="flex flex-1 flex-col divide-y divide-slate-300/40 border-t border-slate-300/40 dark:divide-blue-300/10 dark:border-blue-300/10">
       {rows.map((r) => {
         const Icon = r.icon;
         return (
           <div
             key={r.label}
-            className={`group/row flex items-center gap-4 transition-colors hover:bg-blue-400/[0.06] ${roomy ? "py-3" : "py-[0.5rem]"}`}
+            className={`group/row flex items-center gap-4 py-[0.5rem] transition-colors hover:bg-blue-400/[0.06] ${roomy ? "flex-1" : ""}`}
           >
             <span className={`flex h-6 w-6 shrink-0 items-center justify-center ${TONE[r.tone]}`}>
               <Icon size={20} />
@@ -241,16 +241,16 @@ export default function Profile() {
       </Card>
 
       {/* Details */}
-      <div className="grid grid-cols-1 gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.25fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.25fr_1fr]">
         <Card delay={120}>
-          <div className="h-full px-6 py-4 lg:overflow-hidden">
+          <div className="flex h-full flex-col px-6 py-4">
             <SectionTitle icon={UserIcon}>Personal Information</SectionTitle>
             <InfoRows rows={PERSONAL} />
           </div>
         </Card>
 
         <Card delay={200}>
-          <div className="h-full px-6 py-4 lg:overflow-hidden">
+          <div className="flex h-full flex-col px-6 py-4">
             <SectionTitle icon={GradCapIcon}>Academic Details</SectionTitle>
             <InfoRows rows={ACADEMIC} roomy />
           </div>

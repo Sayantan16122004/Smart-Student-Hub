@@ -1,4 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// same keys as Profile.jsx / Topbar.jsx
+const AVATAR_KEY = "profileAvatar";
+const AVATAR_REMOVED = "none";
+const AVATAR_EVENT = "profile-avatar-change";
+
+const readAvatar = () => {
+  const saved = localStorage.getItem(AVATAR_KEY);
+  return saved === AVATAR_REMOVED ? null : saved || "/avatar.jpg";
+};
 
 const svgProps = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 };
 
@@ -103,6 +114,21 @@ const ChevronRightIcon = ({ className = "" }) => (
   </svg>
 );
 
+/* ---------- routes ---------- */
+
+// Every faculty page lives under /faculty/*. Dashboard itself is /faculty/dashboard.
+export const FACULTY_ROUTES = {
+  dashboard: "/faculty/dashboard",
+  students: "/faculty/students",
+  academicInfo: "/faculty/academic-info",
+  attendance: "/faculty/attendance",
+  performance: "/faculty/performance",
+  certificates: "/faculty/certificates",
+  settings: "/faculty/settings",
+  activities: "/faculty/activities",
+  calendar: "/faculty/calendar",
+};
+
 /* ---------- data ---------- */
 
 const STATS = [
@@ -143,12 +169,12 @@ const ACTIVITIES = [
 ];
 
 const QUICK_ACTIONS = [
-  { label: "View Students", icon: UserPlusIcon, card: "from-blue-500/25 to-[#081a55]/40 border-blue-300/30", ico: "from-blue-500 to-blue-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]", arrow: "bg-blue-500/25 text-blue-200" },
-  { label: "Academic Info", icon: GradCapIcon, card: "from-violet-500/25 to-[#170f4a]/40 border-violet-300/30", ico: "from-violet-500 to-purple-700 shadow-[0_0_12px_rgba(139,92,246,0.5)]", arrow: "bg-violet-500/25 text-violet-200" },
-  { label: "Attendance", icon: CalendarIcon, card: "from-emerald-500/25 to-[#06303c]/40 border-emerald-300/30", ico: "from-emerald-500 to-emerald-700 shadow-[0_0_12px_rgba(16,185,129,0.5)]", arrow: "bg-emerald-500/25 text-emerald-200" },
-  { label: "Performance", icon: BarsIcon, card: "from-amber-500/25 to-[#241f2c]/40 border-amber-300/30", ico: "from-amber-500 to-amber-700 shadow-[0_0_12px_rgba(245,158,11,0.5)]", arrow: "bg-amber-500/25 text-amber-200" },
-  { label: "Certificates", icon: FileIcon, card: "from-indigo-500/25 to-[#15105a]/40 border-indigo-300/30", ico: "from-indigo-500 to-indigo-700 shadow-[0_0_12px_rgba(99,102,241,0.5)]", arrow: "bg-indigo-500/25 text-indigo-200" },
-  { label: "Settings", icon: GearIcon, card: "from-pink-500/25 to-[#33104a]/40 border-pink-300/30", ico: "from-pink-500 to-rose-700 shadow-[0_0_12px_rgba(236,72,153,0.5)]", arrow: "bg-pink-500/25 text-pink-200" },
+  { label: "View Students", to: FACULTY_ROUTES.students, icon: UserPlusIcon, card: "from-blue-500/25 to-[#081a55]/40 border-blue-300/30", ico: "from-blue-500 to-blue-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]", arrow: "bg-blue-500/25 text-blue-200" },
+  { label: "Academic Info", to: FACULTY_ROUTES.academicInfo, icon: GradCapIcon, card: "from-violet-500/25 to-[#170f4a]/40 border-violet-300/30", ico: "from-violet-500 to-purple-700 shadow-[0_0_12px_rgba(139,92,246,0.5)]", arrow: "bg-violet-500/25 text-violet-200" },
+  { label: "Attendance", to: FACULTY_ROUTES.attendance, icon: CalendarIcon, card: "from-emerald-500/25 to-[#06303c]/40 border-emerald-300/30", ico: "from-emerald-500 to-emerald-700 shadow-[0_0_12px_rgba(16,185,129,0.5)]", arrow: "bg-emerald-500/25 text-emerald-200" },
+  { label: "Performance", to: FACULTY_ROUTES.performance, icon: BarsIcon, card: "from-amber-500/25 to-[#241f2c]/40 border-amber-300/30", ico: "from-amber-500 to-amber-700 shadow-[0_0_12px_rgba(245,158,11,0.5)]", arrow: "bg-amber-500/25 text-amber-200" },
+  { label: "Certificates", to: FACULTY_ROUTES.certificates, icon: FileIcon, card: "from-indigo-500/25 to-[#15105a]/40 border-indigo-300/30", ico: "from-indigo-500 to-indigo-700 shadow-[0_0_12px_rgba(99,102,241,0.5)]", arrow: "bg-indigo-500/25 text-indigo-200" },
+  { label: "Settings", to: FACULTY_ROUTES.settings, icon: GearIcon, card: "from-pink-500/25 to-[#33104a]/40 border-pink-300/30", ico: "from-pink-500 to-rose-700 shadow-[0_0_12px_rgba(236,72,153,0.5)]", arrow: "bg-pink-500/25 text-pink-200" },
 ];
 
 const NOTICES = [
@@ -194,7 +220,7 @@ function Card({ className = "", tint = "", glow = false, delay = 0, children }) 
   );
 }
 
-function SectionTitle({ icon: Icon, children, viewAll }) {
+function SectionTitle({ icon: Icon, children, viewAll, onViewAll }) {
   return (
     <div className="mb-3 flex shrink-0 items-center justify-between">
       <h2 className="flex items-center gap-3 text-base font-semibold text-slate-900 dark:text-white">
@@ -202,7 +228,11 @@ function SectionTitle({ icon: Icon, children, viewAll }) {
         {children}
       </h2>
       {viewAll && (
-        <button className="outline-none focus:outline-none focus-visible:outline-none flex items-center gap-1.5 text-xs font-medium text-blue-500 dark:text-blue-400 hover:underline">
+        <button
+          type="button"
+          onClick={onViewAll}
+          className="outline-none focus:outline-none focus-visible:outline-none flex items-center gap-1.5 text-xs font-medium text-blue-500 dark:text-blue-400 hover:underline"
+        >
           View All <ArrowRightIcon size={13} />
         </button>
       )}
@@ -247,8 +277,25 @@ function CountUp({ value, duration = 1200 }) {
 /* ---------- page ---------- */
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const fullName = localStorage.getItem("fullName") || "Faculty";
   const [imgError, setImgError] = useState(false);
+  const [avatar, setAvatar] = useState(readAvatar);
+
+  /* keep the dashboard photo in sync with the Profile page (same tab + other tabs) */
+  useEffect(() => {
+    const sync = () => {
+      setAvatar(readAvatar());
+      setImgError(false);
+    };
+    window.addEventListener(AVATAR_EVENT, sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener(AVATAR_EVENT, sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, []);
+
   const today = new Date();
   const dateStr = formatToday(today);
   const [time, meridiem] = today
@@ -261,13 +308,14 @@ export default function Dashboard() {
       <div className="grid shrink-0 grid-cols-1 gap-5 lg:h-[9.4rem] lg:grid-cols-[1fr_18.6rem]">
         <Card glow delay={0} tint="border-blue-300/25 bg-blue-50 dark:bg-[#0a1a55]/30 dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:via-[#0c2080]/25 dark:to-[#0b1f75]/30">
           <div className="flex h-full items-center gap-6 px-7">
-            {imgError ? (
+            {imgError || !avatar ? (
               <span className="hidden sm:flex h-[6.5rem] w-[6.5rem] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-4 ring-blue-400/60 shadow-[0_0_36px_rgba(59,130,246,0.7)]">
                 <UsersIcon size={40} />
               </span>
             ) : (
               <img
-                src="/avatar.jpg"
+                key={avatar}
+                src={avatar}
                 alt={fullName}
                 onError={() => setImgError(true)}
                 className="hidden sm:block h-[6.5rem] w-[6.5rem] shrink-0 rounded-full object-cover ring-4 ring-blue-400/60 shadow-[0_0_36px_rgba(59,130,246,0.7)]"
@@ -340,7 +388,9 @@ export default function Dashboard() {
         {/* Recent Activities */}
         <Card delay={480}>
           <div className="flex h-full min-h-0 flex-col p-5">
-            <SectionTitle icon={ClockIcon} viewAll>Recent Activities</SectionTitle>
+            <SectionTitle icon={ClockIcon} viewAll onViewAll={() => navigate(FACULTY_ROUTES.activities)}>
+              Recent Activities
+            </SectionTitle>
             <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">
               {ACTIVITIES.map((a) => {
                 const Icon = a.icon;
@@ -372,6 +422,7 @@ export default function Dashboard() {
                   <button
                     key={a.label}
                     type="button"
+                    onClick={() => navigate(a.to)}
                     className={`group outline-none focus:outline-none focus-visible:outline-none flex items-center gap-3 rounded-xl border bg-gradient-to-br ${a.card} px-3 py-1.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-125 hover:shadow-[0_8px_24px_rgba(59,130,246,0.3)]`}
                   >
                     <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white transition-transform duration-300 group-hover:scale-110 ${a.ico}`}>
@@ -391,7 +442,9 @@ export default function Dashboard() {
         {/* Calendar & Notices */}
         <Card delay={640}>
           <div className="flex h-full min-h-0 flex-col p-5">
-            <SectionTitle icon={CalendarIcon} viewAll>Calendar &amp; Notices</SectionTitle>
+            <SectionTitle icon={CalendarIcon} viewAll onViewAll={() => navigate(FACULTY_ROUTES.calendar)}>
+              Calendar &amp; Notices
+            </SectionTitle>
             <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">
               {NOTICES.map((n, i) => (
                 <div key={i} className="group/row flex flex-1 items-center gap-3 py-1.5 transition-colors hover:bg-white/[0.04]">

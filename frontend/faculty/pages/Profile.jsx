@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const svgProps = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" };
 
@@ -69,6 +69,26 @@ const PencilIcon = ({ size = 16 }) => (
     <path d="M3 17.3V21h3.7L18 9.7 14.3 6zM20.7 7a1 1 0 0 0 0-1.4l-2.3-2.3a1 1 0 0 0-1.4 0L15.2 5l3.7 3.7z" />
   </svg>
 );
+const EyeIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} {...svgProps}>
+    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" />
+  </svg>
+);
+const TrashIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} {...svgProps}>
+    <path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3" />
+  </svg>
+);
+const UploadIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} {...svgProps}>
+    <path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+  </svg>
+);
+const CloseIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} {...svgProps}>
+    <path d="M6 6l12 12M18 6L6 18" />
+  </svg>
+);
 
 /* ---------- tones (same palette as dashboard stat cards) ---------- */
 
@@ -118,19 +138,19 @@ const ANIM_CSS = `
 
 /* ---------- pieces ---------- */
 
-/* Same glass card as Dashboard */
-function Card({ className = "", tint = "", glow = false, delay = 0, children }) {
+/* Same glass card as Dashboard. `clip={false}` lets dropdowns overflow the card. */
+function Card({ className = "", tint = "", glow = false, clip = true, delay = 0, children }) {
   const base =
     tint ||
     "border-blue-400/20 bg-white/60 dark:bg-[#07123f]/60 dark:bg-gradient-to-br dark:from-[#1a3fbf]/15 dark:to-transparent";
   return (
     <div
       style={{ "--d": `${delay}ms` }}
-      className={`anim-rise group relative overflow-hidden rounded-2xl border backdrop-blur-[6px] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-blue-400/50 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_16px_44px_rgba(37,99,235,0.3)] ${base} ${className}`}
+      className={`anim-rise group relative ${clip ? "overflow-hidden" : ""} rounded-2xl border backdrop-blur-[6px] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-blue-400/50 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_16px_44px_rgba(37,99,235,0.3)] ${base} ${className}`}
     >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.06] via-transparent to-transparent" />
       {glow && (
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(59,130,246,0.35),transparent_60%)]" />
+        <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(ellipse_at_bottom_right,rgba(59,130,246,0.35),transparent_60%)]" />
       )}
       <div className="relative h-full">{children}</div>
     </div>
@@ -170,6 +190,7 @@ function InfoRows({ rows, roomy = false, baseDelay = 0 }) {
 }
 
 const AVATAR_KEY = "profileAvatar";
+const AVATAR_REMOVED = "none";
 const VIEW = 288;
 const OUT = 400;
 
@@ -289,14 +310,90 @@ function CropModal({ src, onCancel, onSave }) {
   );
 }
 
+/* Full-size photo viewer */
+function ViewModal({ src, name, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      className="pf-fade fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div className="pf-pop relative" onClick={(e) => e.stopPropagation()}>
+        <img
+          src={src}
+          alt={name}
+          className="max-h-[80vh] max-w-[90vw] rounded-2xl border border-blue-300/30 object-contain shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+        />
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={onClose}
+          className="absolute -right-3 -top-3 flex h-9 w-9 items-center justify-center rounded-full border border-blue-300/40 bg-[#0a1a55] text-blue-100 shadow-[0_0_14px_rgba(59,130,246,0.6)] transition-transform duration-300 hover:rotate-90 hover:scale-110 active:scale-95"
+        >
+          <CloseIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function MenuItem({ icon: Icon, label, onClick, disabled = false, danger = false }) {
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      disabled={disabled}
+      onClick={onClick}
+      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[15px] font-medium outline-none transition-all duration-200 focus-visible:bg-blue-400/15 ${
+        disabled
+          ? "cursor-not-allowed opacity-40"
+          : danger
+            ? "text-rose-600 hover:bg-rose-500/10 hover:pl-4 dark:text-rose-400"
+            : "text-slate-800 hover:bg-blue-400/15 hover:pl-4 dark:text-slate-100"
+      }`}
+    >
+      <Icon size={18} />
+      {label}
+    </button>
+  );
+}
+
 /* ---------- page ---------- */
 
 export default function Profile() {
   const name = PROFILE.name;
   const [imgError, setImgError] = useState(false);
-  const [avatar, setAvatar] = useState(() => localStorage.getItem(AVATAR_KEY) || "/avatar.jpg");
+  const [avatar, setAvatar] = useState(() => {
+    const saved = localStorage.getItem(AVATAR_KEY);
+    return saved === AVATAR_REMOVED ? null : saved || "/avatar.jpg";
+  });
   const [cropSrc, setCropSrc] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [viewing, setViewing] = useState(false);
   const fileRef = useRef(null);
+  const menuRef = useRef(null);
+
+  const hasPhoto = Boolean(avatar) && !imgError;
+
+  /* close menu on outside click / Escape */
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDoc = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
+    };
+    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   const onPick = (e) => {
     const file = e.target.files?.[0];
@@ -320,6 +417,27 @@ export default function Profile() {
     }
   };
 
+  const onView = () => {
+    setMenuOpen(false);
+    if (hasPhoto) setViewing(true);
+  };
+
+  const onRemove = () => {
+    setMenuOpen(false);
+    setAvatar(null);
+    setImgError(false);
+    try {
+      localStorage.setItem(AVATAR_KEY, AVATAR_REMOVED);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const onUpload = () => {
+    setMenuOpen(false);
+    fileRef.current?.click();
+  };
+
   return (
     <div className="relative flex min-h-full flex-col gap-4 px-4 py-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pl-4 lg:pr-3">
       <style>{ANIM_CSS}</style>
@@ -327,18 +445,16 @@ export default function Profile() {
       {/* Header */}
       <Card
         glow
+        clip={false}
         delay={0}
+        className="z-20"
         tint="border-blue-400/30 bg-blue-50 dark:bg-[#07123f]/50 dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:via-[#10247a]/35 dark:to-[#1a1a8a]/30"
       >
         <div className="flex flex-col items-start gap-6 px-7 py-6 sm:flex-row sm:items-center">
-          {/* Avatar */}
-          <div className="pf-pop relative shrink-0 transition-transform duration-500 hover:scale-105">
+          {/* Avatar (no zoom on hover — only the camera button animates) */}
+          <div ref={menuRef} className="pf-pop relative shrink-0">
             <span className="pf-glow flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 ring-4 ring-blue-300/40">
-              {imgError ? (
-                <span className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white/90">
-                  <UserIcon size={64} />
-                </span>
-              ) : (
+              {hasPhoto ? (
                 <img
                   key={avatar}
                   src={avatar}
@@ -346,16 +462,39 @@ export default function Profile() {
                   onError={() => setImgError(true)}
                   className="pf-fade h-full w-full rounded-full object-cover"
                 />
+              ) : (
+                <span className="pf-fade flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white/90">
+                  <UserIcon size={64} />
+                </span>
               )}
             </span>
+
             <button
               type="button"
-              aria-label="Change photo"
-              onClick={() => fileRef.current?.click()}
-              className="absolute bottom-1 right-1 flex h-10 w-10 items-center justify-center rounded-full border border-blue-300/40 bg-[#0a1a55] text-blue-100 shadow-[0_0_14px_rgba(59,130,246,0.6)] outline-none transition-transform duration-300 hover:rotate-6 hover:scale-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-300"
+              aria-label="Photo options"
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((o) => !o)}
+              className={`absolute bottom-1 right-1 flex h-10 w-10 items-center justify-center rounded-full border border-blue-300/40 bg-[#0a1a55] text-blue-100 shadow-[0_0_14px_rgba(59,130,246,0.6)] outline-none transition-transform duration-300 hover:rotate-6 hover:scale-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-300 ${
+                menuOpen ? "rotate-6 scale-110" : ""
+              }`}
             >
               <CameraIcon />
             </button>
+
+            {/* Photo menu */}
+            <div
+              role="menu"
+              aria-hidden={!menuOpen}
+              className={`absolute left-0 top-[calc(100%+0.75rem)] z-30 w-52 origin-top-left rounded-xl border border-blue-400/30 bg-white/95 p-1.5 shadow-[0_16px_44px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-200 ease-out dark:bg-[#0a1a55]/95 ${
+                menuOpen ? "visible translate-y-0 scale-100 opacity-100" : "pointer-events-none invisible -translate-y-2 scale-95 opacity-0"
+              }`}
+            >
+              <MenuItem icon={EyeIcon} label="View image" onClick={onView} disabled={!hasPhoto} />
+              <MenuItem icon={UploadIcon} label="Upload image" onClick={onUpload} />
+              <MenuItem icon={TrashIcon} label="Remove image" onClick={onRemove} disabled={!hasPhoto} danger />
+            </div>
+
             <input ref={fileRef} type="file" accept="image/*" onChange={onPick} className="hidden" />
           </div>
 
@@ -398,6 +537,7 @@ export default function Profile() {
       </div>
 
       {cropSrc && <CropModal src={cropSrc} onCancel={() => setCropSrc(null)} onSave={onSaveCrop} />}
+      {viewing && hasPhoto && <ViewModal src={avatar} name={name} onClose={() => setViewing(false)} />}
     </div>
   );
 }

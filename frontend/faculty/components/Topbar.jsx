@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const PROFILE_PATH = "/faculty/profile";
 
 const SearchIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -43,6 +46,7 @@ const circleBtn =
   `${noFocus} relative flex h-12 w-12 items-center justify-center rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 text-blue-500 dark:text-blue-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 hover:scale-105 hover:-translate-y-0.5 hover:border-blue-300/40 transition-all duration-300`;
 
 export default function Topbar() {
+  const navigate = useNavigate();
   const fullName = localStorage.getItem("fullName") || "Faculty";
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
   const [imgError, setImgError] = useState(false);
@@ -80,10 +84,12 @@ export default function Topbar() {
         </span>
       </button>
 
-      {/* Profile chip */}
+      {/* Profile chip → opens Profile page */}
       <button
         type="button"
-        className={`${noFocus} flex items-center gap-3 rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 pl-2 pr-5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 transition-all duration-300`}
+        aria-label="Open profile"
+        onClick={() => navigate(PROFILE_PATH)}
+        className={`${noFocus} flex items-center gap-3 rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 pl-2 pr-5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 active:scale-95 transition-all duration-300`}
       >
         {imgError ? (
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-2 ring-blue-400/50">

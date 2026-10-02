@@ -102,6 +102,20 @@ const ACADEMIC = [
   { icon: LayersIcon, tone: "indigo", label: "Experience", value: "5+ Years" },
 ];
 
+const ANIM_CSS = `
+@keyframes pf-fade{from{opacity:0}to{opacity:1}}
+@keyframes pf-pop{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes pf-slide{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+@keyframes pf-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pf-glow{0%,100%{box-shadow:0 0 30px rgba(59,130,246,.45)}50%{box-shadow:0 0 54px rgba(99,102,241,.8)}}
+.pf-fade{animation:pf-fade .35s ease backwards}
+.pf-pop{animation:pf-pop .3s cubic-bezier(.2,.8,.2,1) backwards}
+.pf-slide{animation:pf-slide .5s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:var(--d,0ms)}
+.pf-up{animation:pf-up .5s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:var(--d,0ms)}
+.pf-glow{animation:pf-glow 3.2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.pf-fade,.pf-pop,.pf-slide,.pf-up,.pf-glow{animation:none}}
+`;
+
 /* ---------- pieces ---------- */
 
 /* Same glass card as Dashboard */
@@ -132,17 +146,18 @@ function SectionTitle({ icon: Icon, children }) {
   );
 }
 
-function InfoRows({ rows, roomy = false }) {
+function InfoRows({ rows, roomy = false, baseDelay = 0 }) {
   return (
     <div className="flex flex-1 flex-col divide-y divide-slate-300/40 border-t border-slate-300/40 dark:divide-blue-300/10 dark:border-blue-300/10">
-      {rows.map((r) => {
+      {rows.map((r, i) => {
         const Icon = r.icon;
         return (
           <div
             key={r.label}
-            className={`group/row flex items-center gap-4 py-[0.5rem] transition-colors hover:bg-blue-400/[0.06] flex-1 lg:max-h-[3.25rem]`}
+            style={{ "--d": `${baseDelay + i * 70}ms` }}
+            className={`pf-slide group/row flex items-center gap-4 rounded-md py-[0.5rem] pl-0 transition-all duration-300 hover:bg-blue-400/[0.08] hover:pl-2 flex-1 lg:max-h-[3.25rem]`}
           >
-            <span className={`flex h-6 w-6 shrink-0 items-center justify-center ${TONE[r.tone]}`}>
+            <span className={`flex h-6 w-6 shrink-0 items-center justify-center transition-transform duration-300 group-hover/row:scale-125 ${TONE[r.tone]}`}>
               <Icon size={20} />
             </span>
             <span className="w-28 shrink-0 text-[15px] text-slate-500 dark:text-slate-400 sm:w-44">{r.label}</span>
@@ -214,8 +229,8 @@ function CropModal({ src, onCancel, onSave }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onKeyDown={(e) => e.key === "Escape" && onCancel()}>
-      <div className="w-full max-w-sm rounded-2xl border border-blue-400/30 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.5)] dark:bg-[#07123f]">
+    <div className="pf-fade fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onKeyDown={(e) => e.key === "Escape" && onCancel()}>
+      <div className="pf-pop w-full max-w-sm rounded-2xl border border-blue-400/30 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.5)] dark:bg-[#07123f]">
         <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Crop Photo</h3>
 
         <div
@@ -307,6 +322,8 @@ export default function Profile() {
 
   return (
     <div className="relative flex min-h-full flex-col gap-4 px-4 py-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pl-4 lg:pr-3">
+      <style>{ANIM_CSS}</style>
+
       {/* Header */}
       <Card
         glow
@@ -315,8 +332,8 @@ export default function Profile() {
       >
         <div className="flex flex-col items-start gap-6 px-7 py-6 sm:flex-row sm:items-center">
           {/* Avatar */}
-          <div className="relative shrink-0">
-            <span className="flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 ring-4 ring-blue-300/40 shadow-[0_0_40px_rgba(59,130,246,0.55)]">
+          <div className="pf-pop relative shrink-0 transition-transform duration-500 hover:scale-105">
+            <span className="pf-glow flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 ring-4 ring-blue-300/40">
               {imgError ? (
                 <span className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white/90">
                   <UserIcon size={64} />
@@ -327,7 +344,7 @@ export default function Profile() {
                   src={avatar}
                   alt={name}
                   onError={() => setImgError(true)}
-                  className="h-full w-full rounded-full object-cover"
+                  className="pf-fade h-full w-full rounded-full object-cover"
                 />
               )}
             </span>
@@ -335,7 +352,7 @@ export default function Profile() {
               type="button"
               aria-label="Change photo"
               onClick={() => fileRef.current?.click()}
-              className="absolute bottom-1 right-1 flex h-10 w-10 items-center justify-center rounded-full border border-blue-300/40 bg-[#0a1a55] text-blue-100 shadow-[0_0_14px_rgba(59,130,246,0.6)] outline-none transition-transform duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-blue-300"
+              className="absolute bottom-1 right-1 flex h-10 w-10 items-center justify-center rounded-full border border-blue-300/40 bg-[#0a1a55] text-blue-100 shadow-[0_0_14px_rgba(59,130,246,0.6)] outline-none transition-transform duration-300 hover:rotate-6 hover:scale-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-300"
             >
               <CameraIcon />
             </button>
@@ -344,8 +361,8 @@ export default function Profile() {
 
           {/* Info */}
           <div className="min-w-0 flex-1">
-            <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">{name}</h1>
-            <span className="mt-2 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-1.5 text-[15px] font-medium text-white shadow-[0_0_14px_rgba(59,130,246,0.45)]">
+            <h1 style={{ "--d": "150ms" }} className="pf-up text-3xl font-semibold text-slate-900 dark:text-white">{name}</h1>
+            <span style={{ "--d": "250ms" }} className="pf-up mt-2 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-1.5 text-[15px] font-medium text-white shadow-[0_0_14px_rgba(59,130,246,0.45)]">
               <GradCapIcon size={18} />
               {PROFILE.role}
             </span>
@@ -354,9 +371,11 @@ export default function Profile() {
           {/* Edit */}
           <button
             type="button"
-            className="flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-[0_0_18px_rgba(59,130,246,0.55)] outline-none transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 focus-visible:ring-2 focus-visible:ring-blue-300 sm:self-start"
+            style={{ "--d": "350ms" }}
+            className="pf-up group/edit flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-[0_0_18px_rgba(59,130,246,0.55)] outline-none transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-300 sm:self-start"
           >
-            <PencilIcon /> Edit Profile
+            <span className="transition-transform duration-300 group-hover/edit:-rotate-12 group-hover/edit:scale-110"><PencilIcon /></span>
+            Edit Profile
           </button>
         </div>
       </Card>
@@ -366,14 +385,14 @@ export default function Profile() {
         <Card delay={120}>
           <div className="flex h-full flex-col px-6 py-4">
             <SectionTitle icon={UserIcon}>Personal Information</SectionTitle>
-            <InfoRows rows={PERSONAL} />
+            <InfoRows rows={PERSONAL} baseDelay={250} />
           </div>
         </Card>
 
         <Card delay={200}>
           <div className="flex h-full flex-col px-6 py-4">
             <SectionTitle icon={GradCapIcon}>Academic Details</SectionTitle>
-            <InfoRows rows={ACADEMIC} roomy />
+            <InfoRows rows={ACADEMIC} roomy baseDelay={330} />
           </div>
         </Card>
       </div>

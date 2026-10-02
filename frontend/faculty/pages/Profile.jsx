@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const svgProps = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" };
 
@@ -154,11 +154,156 @@ function InfoRows({ rows, roomy = false }) {
   );
 }
 
+const AVATAR_KEY = "profileAvatar";
+const VIEW = 288;
+const OUT = 400;
+
+function CropModal({ src, onCancel, onSave }) {
+  const [nat, setNat] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const imgRef = useRef(null);
+  const drag = useRef(null);
+
+  const base = nat ? Math.max(VIEW / nat.w, VIEW / nat.h) : 1;
+  const scale = base * zoom;
+
+  const clamp = (x, y, s) => ({
+    x: Math.min(0, Math.max(VIEW - nat.w * s, x)),
+    y: Math.min(0, Math.max(VIEW - nat.h * s, y)),
+  });
+
+  const onLoad = (e) => {
+    const w = e.target.naturalWidth;
+    const h = e.target.naturalHeight;
+    const b = Math.max(VIEW / w, VIEW / h);
+    setNat({ w, h });
+    setPos({ x: (VIEW - w * b) / 2, y: (VIEW - h * b) / 2 });
+  };
+
+  const changeZoom = (z) => {
+    if (!nat) return;
+    const next = Math.min(3, Math.max(1, z));
+    const s2 = base * next;
+    const cx = (VIEW / 2 - pos.x) / scale;
+    const cy = (VIEW / 2 - pos.y) / scale;
+    setPos(clamp(VIEW / 2 - cx * s2, VIEW / 2 - cy * s2, s2));
+    setZoom(next);
+  };
+
+  const onDown = (e) => {
+    if (!nat) return;
+    drag.current = { px: e.clientX, py: e.clientY, x: pos.x, y: pos.y };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onMove = (e) => {
+    if (!drag.current) return;
+    const d = drag.current;
+    setPos(clamp(d.x + e.clientX - d.px, d.y + e.clientY - d.py, scale));
+  };
+  const onUp = () => { drag.current = null; };
+
+  const save = () => {
+    if (!nat) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = OUT;
+    canvas.height = OUT;
+    const r = OUT / VIEW;
+    canvas.getContext("2d").drawImage(imgRef.current, pos.x * r, pos.y * r, nat.w * scale * r, nat.h * scale * r);
+    onSave(canvas.toDataURL("image/jpeg", 0.9));
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onKeyDown={(e) => e.key === "Escape" && onCancel()}>
+      <div className="w-full max-w-sm rounded-2xl border border-blue-400/30 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.5)] dark:bg-[#07123f]">
+        <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Crop Photo</h3>
+
+        <div
+          className="relative mx-auto cursor-grab touch-none select-none overflow-hidden rounded-xl bg-black active:cursor-grabbing"
+          style={{ width: VIEW, height: VIEW }}
+          onPointerDown={onDown}
+          onPointerMove={onMove}
+          onPointerUp={onUp}
+          onPointerCancel={onUp}
+          onWheel={(e) => changeZoom(zoom - e.deltaY * 0.002)}
+        >
+          <img
+            ref={imgRef}
+            src={src}
+            alt="Crop preview"
+            draggable={false}
+            onLoad={onLoad}
+            className="pointer-events-none absolute left-0 top-0 max-w-none"
+            style={nat ? { width: nat.w * scale, height: nat.h * scale, transform: `translate(${pos.x}px, ${pos.y}px)` } : { opacity: 0 }}
+          />
+          <div className="pointer-events-none absolute inset-0 rounded-full shadow-[0_0_0_9999px_rgba(0,0,0,0.6)] ring-2 ring-white/80" />
+        </div>
+
+        <div className="mt-5 flex items-center gap-3">
+          <span className="text-xs text-slate-500 dark:text-slate-400">Zoom</span>
+          <input
+            type="range"
+            min="1"
+            max="3"
+            step="0.01"
+            value={zoom}
+            onChange={(e) => changeZoom(parseFloat(e.target.value))}
+            className="h-1.5 flex-1 cursor-pointer accent-blue-500"
+          />
+        </div>
+        <p className="mt-2 text-center text-xs text-slate-500 dark:text-slate-400">Drag to reposition</p>
+
+        <div className="mt-5 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-xl border border-slate-300/60 px-4 py-2 text-[15px] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-blue-300/20 dark:text-slate-200 dark:hover:bg-white/5"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={save}
+            className="rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-2 text-[15px] font-medium text-white shadow-[0_0_14px_rgba(59,130,246,0.45)] transition-all hover:brightness-110"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- page ---------- */
 
 export default function Profile() {
   const name = PROFILE.name;
   const [imgError, setImgError] = useState(false);
+  const [avatar, setAvatar] = useState(() => localStorage.getItem(AVATAR_KEY) || "/avatar.jpg");
+  const [cropSrc, setCropSrc] = useState(null);
+  const fileRef = useRef(null);
+
+  const onPick = (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return alert("Please select an image file.");
+    if (file.size > 8 * 1024 * 1024) return alert("Image must be under 8 MB.");
+    const reader = new FileReader();
+    reader.onload = () => setCropSrc(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  const onSaveCrop = (dataUrl) => {
+    setAvatar(dataUrl);
+    setImgError(false);
+    setCropSrc(null);
+    try {
+      localStorage.setItem(AVATAR_KEY, dataUrl);
+    } catch {
+      /* storage full */
+    }
+  };
 
   return (
     <div className="relative flex min-h-full flex-col gap-4 px-4 py-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pl-4 lg:pr-3">
@@ -178,7 +323,8 @@ export default function Profile() {
                 </span>
               ) : (
                 <img
-                  src="/avatar.jpg"
+                  key={avatar}
+                  src={avatar}
                   alt={name}
                   onError={() => setImgError(true)}
                   className="h-full w-full rounded-full object-cover"
@@ -188,10 +334,12 @@ export default function Profile() {
             <button
               type="button"
               aria-label="Change photo"
+              onClick={() => fileRef.current?.click()}
               className="absolute bottom-1 right-1 flex h-10 w-10 items-center justify-center rounded-full border border-blue-300/40 bg-[#0a1a55] text-blue-100 shadow-[0_0_14px_rgba(59,130,246,0.6)] outline-none transition-transform duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-blue-300"
             >
               <CameraIcon />
             </button>
+            <input ref={fileRef} type="file" accept="image/*" onChange={onPick} className="hidden" />
           </div>
 
           {/* Info */}
@@ -229,6 +377,8 @@ export default function Profile() {
           </div>
         </Card>
       </div>
+
+      {cropSrc && <CropModal src={cropSrc} onCancel={() => setCropSrc(null)} onSave={onSaveCrop} />}
     </div>
   );
 }

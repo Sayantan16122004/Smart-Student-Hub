@@ -144,7 +144,7 @@ function InfoRows({ rows, roomy = false }) {
         return (
           <div
             key={r.label}
-            className={`group/row flex items-center gap-4 py-[0.5rem] transition-colors hover:bg-blue-400/[0.06] ${roomy ? "flex-1" : ""}`}
+            className={`group/row flex items-center gap-4 py-[0.5rem] transition-colors hover:bg-blue-400/[0.06] flex-1 lg:max-h-[3.25rem]`}
           >
             <span className={`flex h-6 w-6 shrink-0 items-center justify-center ${TONE[r.tone]}`}>
               <Icon size={20} />
@@ -182,13 +182,13 @@ export default function Profile() {
         delay={0}
         tint="border-blue-400/30 bg-blue-50 dark:bg-[#07123f]/50 dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:via-[#10247a]/35 dark:to-[#1a1a8a]/30"
       >
-        <div className="flex flex-col items-start gap-6 px-6 py-4 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start gap-6 px-7 py-6 sm:flex-row sm:items-center">
           {/* Avatar */}
           <div className="relative shrink-0">
-            <span className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 ring-4 ring-blue-300/40 shadow-[0_0_40px_rgba(59,130,246,0.55)]">
+            <span className="flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 ring-4 ring-blue-300/40 shadow-[0_0_40px_rgba(59,130,246,0.55)]">
               {imgError ? (
                 <span className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white/90">
-                  <UserIcon size={52} />
+                  <UserIcon size={64} />
                 </span>
               ) : (
                 <img
@@ -216,7 +216,7 @@ export default function Profile() {
               {PROFILE.role}
             </span>
 
-            <div className="mt-3 flex flex-col gap-2">
+            <div className="mt-4 flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                 <ContactItem icon={MailIcon} tone="sky">{PROFILE.email}</ContactItem>
                 <span className="hidden h-8 w-px bg-slate-300/60 dark:bg-blue-300/15 sm:block" />
@@ -241,7 +241,7 @@ export default function Profile() {
       </Card>
 
       {/* Details */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.25fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.25fr_1fr] lg:grid-rows-1">
         <Card delay={120}>
           <div className="flex h-full flex-col px-6 py-4">
             <SectionTitle icon={UserIcon}>Personal Information</SectionTitle>

@@ -290,6 +290,8 @@ function InfoRows({ rows, values, editing, draft, errors, onChange, onEnter, bas
 
 const AVATAR_KEY = "profileAvatar";
 const AVATAR_REMOVED = "none";
+const AVATAR_EVENT = "profile-avatar-change"; // Topbar listens to this
+const notifyAvatarChange = () => window.dispatchEvent(new Event(AVATAR_EVENT));
 const VIEW = 288;
 const OUT = 400;
 
@@ -577,6 +579,7 @@ export default function Profile() {
     setCropSrc(null);
     try {
       localStorage.setItem(AVATAR_KEY, dataUrl);
+      notifyAvatarChange();
     } catch {
       /* storage full */
     }
@@ -593,6 +596,7 @@ export default function Profile() {
     setImgError(false);
     try {
       localStorage.setItem(AVATAR_KEY, AVATAR_REMOVED);
+      notifyAvatarChange();
     } catch {
       /* ignore */
     }

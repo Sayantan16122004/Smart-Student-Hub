@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 const PROFILE_PATH = "/faculty/profile";
 
+// same keys as Profile.jsx
+const AVATAR_KEY = "profileAvatar";
+const AVATAR_REMOVED = "none";
+const AVATAR_EVENT = "profile-avatar-change";
+
+const readAvatar = () => {
+  const saved = localStorage.getItem(AVATAR_KEY);
+  return saved === AVATAR_REMOVED ? null : saved || "/avatar.jpg";
+};
+
 const SearchIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
@@ -16,11 +26,6 @@ const BellIcon = () => (
 const UserIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-  </svg>
-);
-const ChevronDownIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <path d="M6 9l6 6 6-6" />
   </svg>
 );
 const SunIcon = () => (
@@ -50,6 +55,21 @@ export default function Topbar() {
   const fullName = localStorage.getItem("fullName") || "Faculty";
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
   const [imgError, setImgError] = useState(false);
+  const [avatar, setAvatar] = useState(readAvatar);
+
+  /* keep the topbar photo in sync with the Profile page (same tab + other tabs) */
+  useEffect(() => {
+    const sync = () => {
+      setAvatar(readAvatar());
+      setImgError(false);
+    };
+    window.addEventListener(AVATAR_EVENT, sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener(AVATAR_EVENT, sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -91,13 +111,14 @@ export default function Topbar() {
         onClick={() => navigate(PROFILE_PATH)}
         className={`${noFocus} flex items-center gap-3 rounded-full border border-blue-300/20 bg-white/70 dark:bg-[#0a1a55]/30 pl-2 pr-5 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_14px_rgba(59,130,246,0.2)] backdrop-blur-[6px] hover:bg-blue-500/25 active:scale-95 transition-all duration-300`}
       >
-        {imgError ? (
+        {imgError || !avatar ? (
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white ring-2 ring-blue-400/50">
             <UserIcon />
           </span>
         ) : (
           <img
-            src="/avatar.jpg"
+            key={avatar}
+            src={avatar}
             alt={fullName}
             onError={() => setImgError(true)}
             className="h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-blue-400/50"
@@ -113,11 +134,6 @@ export default function Topbar() {
             <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
             Online
           </span>
-        </span>
-
-        {/* Arrow: right aligned + vertically centered */}
-        <span className="ml-auto flex shrink-0 items-center justify-center self-center text-slate-900 dark:text-white">
-          <ChevronDownIcon />
         </span>
       </button>
 

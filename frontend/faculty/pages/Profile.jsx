@@ -101,26 +101,83 @@ const TONE = {
 
 /* ---------- data ---------- */
 
-const PROFILE = {
+const ROLE = "Faculty Member";
+
+const PROFILE_KEY = "profileData";
+
+const DEFAULT_PROFILE = {
   name: "Pratul Shit",
-  role: "Faculty Member",
+  email: "pratulshit@example.com",
+  phone: "+91 98765 43210",
+  dob: "1998-01-15",
+  gender: "Male",
+  address: "Kolkata, West Bengal, India",
+  department: "Computer Science & Engineering",
+  designation: "Assistant Professor",
+  qualification: "M.Tech",
+  experience: "5+ Years",
+};
+
+const formatDob = (iso) => {
+  if (!iso) return "";
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 };
 
 const PERSONAL = [
-  { icon: UserIcon, tone: "violet", label: "Full Name", value: "Pratul Shit" },
-  { icon: MailIcon, tone: "green", label: "Email Address", value: "pratulshit@example.com" },
-  { icon: PhoneIcon, tone: "green", label: "Phone Number", value: "+91 98765 43210" },
-  { icon: CalendarIcon, tone: "sky", label: "Date of Birth", value: "15 Jan 1998" },
-  { icon: GenderIcon, tone: "violet", label: "Gender", value: "Male" },
-  { icon: PinIcon, tone: "green", label: "Address", value: "Kolkata, West Bengal, India" },
+  { key: "name", icon: UserIcon, tone: "violet", label: "Full Name", type: "text", autoComplete: "name" },
+  { key: "email", icon: MailIcon, tone: "green", label: "Email Address", type: "email", autoComplete: "email" },
+  { key: "phone", icon: PhoneIcon, tone: "green", label: "Phone Number", type: "tel", autoComplete: "tel" },
+  { key: "dob", icon: CalendarIcon, tone: "sky", label: "Date of Birth", type: "date", format: formatDob },
+  { key: "gender", icon: GenderIcon, tone: "violet", label: "Gender", type: "select", options: ["Male", "Female", "Other"] },
+  { key: "address", icon: PinIcon, tone: "green", label: "Address", type: "text", autoComplete: "street-address" },
 ];
 
 const ACADEMIC = [
-  { icon: BookIcon, tone: "indigo", label: "Department", value: "Computer Science & Engineering" },
-  { icon: BriefcaseIcon, tone: "indigo", label: "Designation", value: "Assistant Professor" },
-  { icon: AwardIcon, tone: "indigo", label: "Qualification", value: "M.Tech" },
-  { icon: LayersIcon, tone: "indigo", label: "Experience", value: "5+ Years" },
+  { key: "department", icon: BookIcon, tone: "indigo", label: "Department", type: "text" },
+  { key: "designation", icon: BriefcaseIcon, tone: "indigo", label: "Designation", type: "text" },
+  { key: "qualification", icon: AwardIcon, tone: "indigo", label: "Qualification", type: "text" },
+  { key: "experience", icon: LayersIcon, tone: "indigo", label: "Experience", type: "text" },
 ];
+
+const FIELDS = [...PERSONAL, ...ACADEMIC];
+
+/* ---------- data layer ----------
+   Backend connect korar somoy sudhu ei duita function bodol korlei hobe. */
+
+// TODO(backend): replace with GET /api/profile
+function loadProfile() {
+  try {
+    const saved = localStorage.getItem(PROFILE_KEY);
+    return saved ? { ...DEFAULT_PROFILE, ...JSON.parse(saved) } : DEFAULT_PROFILE;
+  } catch {
+    return DEFAULT_PROFILE;
+  }
+}
+
+// TODO(backend): replace body with PUT /api/profile (return the saved profile)
+async function saveProfile(data) {
+  await new Promise((r) => setTimeout(r, 450)); // fake latency, remove with backend
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
+  return data;
+}
+
+const clean = (d) => Object.fromEntries(Object.entries(d).map(([k, v]) => [k, String(v ?? "").trim()]));
+
+function validate(d) {
+  const e = {};
+  FIELDS.forEach((f) => {
+    if (!d[f.key]) e[f.key] = `${f.label} is required`;
+  });
+  if (!e.name && d.name.length < 2) e.name = "Full Name is too short";
+  if (!e.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) e.email = "Enter a valid email address";
+  if (!e.phone) {
+    const digits = d.phone.replace(/\D/g, "").length;
+    if (!/^[+\d\s()-]+$/.test(d.phone) || digits < 7 || digits > 15) e.phone = "Enter a valid phone number";
+  }
+  if (!e.dob && new Date(d.dob) > new Date()) e.dob = "Date of Birth can't be in the future";
+  return e;
+}
 
 const ANIM_CSS = `
 @keyframes pf-fade{from{opacity:0}to{opacity:1}}
@@ -166,22 +223,64 @@ function SectionTitle({ icon: Icon, children }) {
   );
 }
 
-function InfoRows({ rows, roomy = false, baseDelay = 0 }) {
+function Field({ row, value, error, onChange, onEnter }) {
+  const common = {
+    id: `f-${row.key}`,
+    value,
+    title: error || undefined,
+    "aria-invalid": Boolean(error),
+    onChange: (e) => onChange(row.key, e.target.value),
+    className: `pf-fade min-w-0 flex-1 rounded-lg border bg-white/70 px-3 py-1.5 text-[15px] font-medium text-slate-900 outline-none transition-all duration-200 focus:ring-2 dark:bg-[#0a1a55]/60 dark:text-white dark:[color-scheme:dark] ${
+      error
+        ? "border-rose-500/70 focus:border-rose-500 focus:ring-rose-500/30"
+        : "border-blue-400/30 focus:border-blue-400 focus:ring-blue-400/30"
+    }`,
+  };
+
+  if (row.type === "select") {
+    return (
+      <select {...common}>
+        {row.options.map((o) => (
+          <option key={o} value={o} className="dark:bg-[#0a1a55]">{o}</option>
+        ))}
+      </select>
+    );
+  }
+
+  return (
+    <input
+      {...common}
+      type={row.type}
+      autoComplete={row.autoComplete}
+      max={row.type === "date" ? new Date().toISOString().slice(0, 10) : undefined}
+      onKeyDown={(e) => e.key === "Enter" && onEnter()}
+    />
+  );
+}
+
+function InfoRows({ rows, values, editing, draft, errors, onChange, onEnter, baseDelay = 0 }) {
   return (
     <div className="flex flex-1 flex-col divide-y divide-slate-300/40 border-t border-slate-300/40 dark:divide-blue-300/10 dark:border-blue-300/10">
       {rows.map((r, i) => {
         const Icon = r.icon;
+        const shown = r.format ? r.format(values[r.key]) : values[r.key];
         return (
           <div
-            key={r.label}
+            key={r.key}
             style={{ "--d": `${baseDelay + i * 70}ms` }}
-            className={`pf-slide group/row flex items-center gap-4 rounded-md py-[0.5rem] pl-0 transition-all duration-300 hover:bg-blue-400/[0.08] hover:pl-2 flex-1 lg:max-h-[3.25rem]`}
+            className={`pf-slide group/row flex items-center gap-4 rounded-md py-[0.5rem] pl-0 transition-all duration-300 flex-1 lg:max-h-[3.25rem] ${
+              editing ? "" : "hover:bg-blue-400/[0.08] hover:pl-2"
+            }`}
           >
             <span className={`flex h-6 w-6 shrink-0 items-center justify-center transition-transform duration-300 group-hover/row:scale-125 ${TONE[r.tone]}`}>
               <Icon size={20} />
             </span>
-            <span className="w-28 shrink-0 text-[15px] text-slate-500 dark:text-slate-400 sm:w-44">{r.label}</span>
-            <span className="min-w-0 flex-1 truncate text-[15px] font-medium text-slate-900 dark:text-white">{r.value}</span>
+            <label htmlFor={`f-${r.key}`} className="w-28 shrink-0 text-[15px] text-slate-500 dark:text-slate-400 sm:w-44">{r.label}</label>
+            {editing ? (
+              <Field row={r} value={draft[r.key]} error={errors[r.key]} onChange={onChange} onEnter={onEnter} />
+            ) : (
+              <span className="min-w-0 flex-1 truncate text-[15px] font-medium text-slate-900 dark:text-white">{shown}</span>
+            )}
           </div>
         );
       })}
@@ -366,7 +465,13 @@ function MenuItem({ icon: Icon, label, onClick, disabled = false, danger = false
 /* ---------- page ---------- */
 
 export default function Profile() {
-  const name = PROFILE.name;
+  const [profile, setProfile] = useState(loadProfile);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(profile);
+  const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
+  const [notice, setNotice] = useState(null);
+  const name = profile.name;
   const [imgError, setImgError] = useState(false);
   const [avatar, setAvatar] = useState(() => {
     const saved = localStorage.getItem(AVATAR_KEY);
@@ -394,6 +499,66 @@ export default function Profile() {
       document.removeEventListener("keydown", onKey);
     };
   }, [menuOpen]);
+
+  /* toast auto-hide */
+  useEffect(() => {
+    if (!notice) return;
+    const t = setTimeout(() => setNotice(null), 3000);
+    return () => clearTimeout(t);
+  }, [notice]);
+
+  const dirty = editing && JSON.stringify(clean(draft)) !== JSON.stringify(clean(profile));
+
+  const startEdit = () => {
+    setDraft(profile);
+    setErrors({});
+    setEditing(true);
+  };
+
+  const cancelEdit = () => {
+    if (saving) return;
+    setEditing(false);
+    setErrors({});
+  };
+
+  const onChange = (key, value) => {
+    setDraft((d) => ({ ...d, [key]: value }));
+    setErrors((e) => {
+      if (!e[key]) return e;
+      const { [key]: _removed, ...rest } = e;
+      return rest;
+    });
+  };
+
+  const onSave = async () => {
+    if (saving) return;
+    const cleaned = clean(draft);
+    const errs = validate(cleaned);
+    setErrors(errs);
+    if (Object.keys(errs).length) {
+      setNotice({ type: "error", text: Object.values(errs)[0] });
+      return;
+    }
+    setSaving(true);
+    try {
+      const saved = await saveProfile(cleaned);
+      setProfile(saved);
+      setEditing(false);
+      setNotice({ type: "success", text: "Profile updated" });
+    } catch {
+      setNotice({ type: "error", text: "Couldn't save changes. Try again." });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /* Esc cancels editing */
+  useEffect(() => {
+    if (!editing) return;
+    const onKey = (e) => e.key === "Escape" && !cropSrc && !viewing && cancelEdit();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   const onPick = (e) => {
     const file = e.target.files?.[0];
@@ -503,19 +668,41 @@ export default function Profile() {
             <h1 style={{ "--d": "150ms" }} className="pf-up text-3xl font-semibold text-slate-900 dark:text-white">{name}</h1>
             <span style={{ "--d": "250ms" }} className="pf-up mt-2 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-1.5 text-[15px] font-medium text-white shadow-[0_0_14px_rgba(59,130,246,0.45)]">
               <GradCapIcon size={18} />
-              {PROFILE.role}
+              {ROLE}
             </span>
           </div>
 
-          {/* Edit */}
-          <button
-            type="button"
-            style={{ "--d": "350ms" }}
-            className="pf-up group/edit flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-[0_0_18px_rgba(59,130,246,0.55)] outline-none transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-300 sm:self-start"
-          >
-            <span className="transition-transform duration-300 group-hover/edit:-rotate-12 group-hover/edit:scale-110"><PencilIcon /></span>
-            Edit Profile
-          </button>
+          {/* Edit / Save / Cancel */}
+          {editing ? (
+            <div className="pf-fade flex shrink-0 items-center gap-3 sm:self-start">
+              <button
+                type="button"
+                onClick={cancelEdit}
+                disabled={saving}
+                className="rounded-xl border border-slate-300/60 px-5 py-2.5 text-[15px] font-medium text-slate-700 outline-none transition-all duration-300 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-blue-300 disabled:opacity-50 dark:border-blue-300/30 dark:text-slate-100 dark:hover:bg-white/5"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={onSave}
+                disabled={saving || !dirty}
+                className="rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-[0_0_18px_rgba(59,130,246,0.55)] outline-none transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:brightness-100"
+              >
+                {saving ? "Saving…" : "Save Changes"}
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={startEdit}
+              style={{ "--d": "350ms" }}
+              className="pf-up group/edit flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-[0_0_18px_rgba(59,130,246,0.55)] outline-none transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-300 sm:self-start"
+            >
+              <span className="transition-transform duration-300 group-hover/edit:-rotate-12 group-hover/edit:scale-110"><PencilIcon /></span>
+              Edit Profile
+            </button>
+          )}
         </div>
       </Card>
 
@@ -524,20 +711,34 @@ export default function Profile() {
         <Card delay={120}>
           <div className="flex h-full flex-col px-6 py-4">
             <SectionTitle icon={UserIcon}>Personal Information</SectionTitle>
-            <InfoRows rows={PERSONAL} baseDelay={250} />
+            <InfoRows rows={PERSONAL} values={profile} editing={editing} draft={draft} errors={errors} onChange={onChange} onEnter={onSave} baseDelay={250} />
           </div>
         </Card>
 
         <Card delay={200}>
           <div className="flex h-full flex-col px-6 py-4">
             <SectionTitle icon={GradCapIcon}>Academic Details</SectionTitle>
-            <InfoRows rows={ACADEMIC} roomy baseDelay={330} />
+            <InfoRows rows={ACADEMIC} values={profile} editing={editing} draft={draft} errors={errors} onChange={onChange} onEnter={onSave} baseDelay={330} />
           </div>
         </Card>
       </div>
 
       {cropSrc && <CropModal src={cropSrc} onCancel={() => setCropSrc(null)} onSave={onSaveCrop} />}
       {viewing && hasPhoto && <ViewModal src={avatar} name={name} onClose={() => setViewing(false)} />}
+
+      {notice && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
+          <div
+            key={notice.text}
+            role="status"
+            className={`pf-pop rounded-xl px-5 py-3 text-[15px] font-medium text-white shadow-[0_10px_30px_rgba(0,0,0,0.4)] ${
+              notice.type === "error" ? "bg-rose-600" : "bg-emerald-600"
+            }`}
+          >
+            {notice.text}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -145,7 +145,7 @@ function InfoRows({ rows, roomy = false }) {
         return (
           <div
             key={r.label}
-            className={`group/row flex items-center gap-4 transition-colors hover:bg-blue-400/[0.06] ${roomy ? "py-[0.95rem]" : "py-[0.7rem]"}`}
+            className={`group/row flex items-center gap-4 transition-colors hover:bg-blue-400/[0.06] ${roomy ? "py-3" : "py-[0.5rem]"}`}
           >
             <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${TONE[r.tone]}`}>
               <Icon size={18} />
@@ -176,20 +176,20 @@ export default function Profile() {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="relative flex min-h-full flex-col gap-5 px-4 pb-6 pt-4 lg:pb-8 lg:pl-4 lg:pr-3 lg:pt-5">
+    <div className="relative flex min-h-full flex-col gap-4 px-4 py-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pl-4 lg:pr-3">
       {/* Header */}
       <Card
         glow
         delay={0}
         tint="border-blue-400/30 bg-blue-50 dark:bg-[#07123f]/50 dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:via-[#10247a]/35 dark:to-[#1a1a8a]/30"
       >
-        <div className="flex flex-col items-start gap-6 px-7 py-6 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start gap-6 px-6 py-4 sm:flex-row sm:items-center">
           {/* Avatar */}
           <div className="relative shrink-0">
-            <span className="flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 ring-4 ring-blue-300/40 shadow-[0_0_40px_rgba(59,130,246,0.55)]">
+            <span className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 ring-4 ring-blue-300/40 shadow-[0_0_40px_rgba(59,130,246,0.55)]">
               {imgError ? (
                 <span className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white/90">
-                  <UserIcon size={64} />
+                  <UserIcon size={52} />
                 </span>
               ) : (
                 <img
@@ -217,7 +217,7 @@ export default function Profile() {
               {PROFILE.role}
             </span>
 
-            <div className="mt-4 flex flex-col gap-3">
+            <div className="mt-3 flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                 <ContactItem icon={MailIcon} tone="violet">{PROFILE.email}</ContactItem>
                 <span className="hidden h-8 w-px bg-slate-300/60 dark:bg-blue-300/15 sm:block" />
@@ -242,16 +242,16 @@ export default function Profile() {
       </Card>
 
       {/* Details */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1.25fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.25fr_1fr]">
         <Card delay={120}>
-          <div className="h-full px-6 py-5">
+          <div className="h-full px-6 py-4 lg:overflow-hidden">
             <SectionTitle icon={UserIcon}>Personal Information</SectionTitle>
             <InfoRows rows={PERSONAL} />
           </div>
         </Card>
 
         <Card delay={200}>
-          <div className="h-full px-6 py-5">
+          <div className="h-full px-6 py-4 lg:overflow-hidden">
             <SectionTitle icon={GradCapIcon}>Academic Details</SectionTitle>
             <InfoRows rows={ACADEMIC} roomy />
           </div>

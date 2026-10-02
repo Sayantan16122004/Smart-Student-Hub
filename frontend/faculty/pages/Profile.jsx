@@ -73,11 +73,10 @@ const PencilIcon = ({ size = 16 }) => (
 /* ---------- tones (same palette as dashboard stat cards) ---------- */
 
 const TONE = {
-  blue: "text-blue-500 bg-blue-500/15 border-blue-400/30 dark:text-blue-300 dark:bg-blue-500/20",
-  violet: "text-violet-500 bg-violet-500/15 border-violet-400/30 dark:text-violet-300 dark:bg-violet-500/20",
-  green: "text-emerald-500 bg-emerald-500/15 border-emerald-400/30 dark:text-emerald-400 dark:bg-emerald-500/20",
-  amber: "text-amber-500 bg-amber-500/15 border-amber-400/30 dark:text-amber-400 dark:bg-amber-500/20",
-  pink: "text-pink-500 bg-pink-500/15 border-pink-400/30 dark:text-pink-400 dark:bg-pink-500/20",
+  sky: "text-sky-500 dark:text-sky-400",
+  violet: "text-violet-500 dark:text-violet-300",
+  green: "text-emerald-500 dark:text-emerald-400",
+  indigo: "text-indigo-500 dark:text-indigo-300",
 };
 
 /* ---------- data ---------- */
@@ -92,19 +91,19 @@ const PROFILE = {
 };
 
 const PERSONAL = [
-  { icon: UserIcon, tone: "blue", label: "Full Name", value: "Pratul Shit" },
-  { icon: MailIcon, tone: "violet", label: "Email Address", value: "pratulshit@example.com" },
+  { icon: UserIcon, tone: "violet", label: "Full Name", value: "Pratul Shit" },
+  { icon: MailIcon, tone: "green", label: "Email Address", value: "pratulshit@example.com" },
   { icon: PhoneIcon, tone: "green", label: "Phone Number", value: "+91 98765 43210" },
-  { icon: CalendarIcon, tone: "amber", label: "Date of Birth", value: "15 Jan 1998" },
-  { icon: GenderIcon, tone: "pink", label: "Gender", value: "Male" },
-  { icon: PinIcon, tone: "blue", label: "Address", value: "Kolkata, West Bengal, India" },
+  { icon: CalendarIcon, tone: "sky", label: "Date of Birth", value: "15 Jan 1998" },
+  { icon: GenderIcon, tone: "violet", label: "Gender", value: "Male" },
+  { icon: PinIcon, tone: "green", label: "Address", value: "Kolkata, West Bengal, India" },
 ];
 
 const ACADEMIC = [
-  { icon: BookIcon, tone: "blue", label: "Department", value: "Computer Science & Engineering" },
-  { icon: BriefcaseIcon, tone: "violet", label: "Designation", value: "Assistant Professor" },
-  { icon: AwardIcon, tone: "amber", label: "Qualification", value: "M.Tech" },
-  { icon: LayersIcon, tone: "green", label: "Experience", value: "5+ Years" },
+  { icon: BookIcon, tone: "indigo", label: "Department", value: "Computer Science & Engineering" },
+  { icon: BriefcaseIcon, tone: "indigo", label: "Designation", value: "Assistant Professor" },
+  { icon: AwardIcon, tone: "indigo", label: "Qualification", value: "M.Tech" },
+  { icon: LayersIcon, tone: "indigo", label: "Experience", value: "5+ Years" },
 ];
 
 /* ---------- pieces ---------- */
@@ -147,8 +146,8 @@ function InfoRows({ rows, roomy = false }) {
             key={r.label}
             className={`group/row flex items-center gap-4 transition-colors hover:bg-blue-400/[0.06] ${roomy ? "py-3" : "py-[0.5rem]"}`}
           >
-            <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${TONE[r.tone]}`}>
-              <Icon size={18} />
+            <span className={`flex h-6 w-6 shrink-0 items-center justify-center ${TONE[r.tone]}`}>
+              <Icon size={20} />
             </span>
             <span className="w-28 shrink-0 text-[15px] text-slate-500 dark:text-slate-400 sm:w-44">{r.label}</span>
             <span className="min-w-0 flex-1 truncate text-[15px] font-medium text-slate-900 dark:text-white">{r.value}</span>
@@ -162,7 +161,7 @@ function InfoRows({ rows, roomy = false }) {
 function ContactItem({ icon: Icon, tone, children }) {
   return (
     <span className="flex items-center gap-3 text-[15px] text-slate-700 dark:text-slate-100">
-      <span className={`flex h-8 w-8 items-center justify-center rounded-lg border ${TONE[tone]}`}><Icon size={16} /></span>
+      <span className={TONE[tone]}><Icon size={20} /></span>
       {children}
     </span>
   );
@@ -219,14 +218,14 @@ export default function Profile() {
 
             <div className="mt-3 flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-                <ContactItem icon={MailIcon} tone="violet">{PROFILE.email}</ContactItem>
+                <ContactItem icon={MailIcon} tone="sky">{PROFILE.email}</ContactItem>
                 <span className="hidden h-8 w-px bg-slate-300/60 dark:bg-blue-300/15 sm:block" />
-                <ContactItem icon={PhoneIcon} tone="green">{PROFILE.phone}</ContactItem>
+                <ContactItem icon={PhoneIcon} tone="sky">{PROFILE.phone}</ContactItem>
               </div>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-                <ContactItem icon={PinIcon} tone="blue">{PROFILE.location}</ContactItem>
+                <ContactItem icon={PinIcon} tone="sky">{PROFILE.location}</ContactItem>
                 <span className="hidden h-8 w-px bg-slate-300/60 dark:bg-blue-300/15 sm:block" />
-                <ContactItem icon={GradCapIcon} tone="amber">{PROFILE.department}</ContactItem>
+                <ContactItem icon={GradCapIcon} tone="green">{PROFILE.department}</ContactItem>
               </div>
             </div>
           </div>

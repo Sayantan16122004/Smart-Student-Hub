@@ -84,10 +84,6 @@ const TONE = {
 const PROFILE = {
   name: "Pratul Shit",
   role: "Faculty Member",
-  email: "pratulshit@example.com",
-  phone: "+91 98765 43210",
-  location: "Kolkata, West Bengal",
-  department: "CSE Department",
 };
 
 const PERSONAL = [
@@ -158,20 +154,10 @@ function InfoRows({ rows, roomy = false }) {
   );
 }
 
-function ContactItem({ icon: Icon, tone, children }) {
-  return (
-    <span className="flex items-center gap-3 text-[15px] text-slate-700 dark:text-slate-100">
-      <span className={TONE[tone]}><Icon size={20} /></span>
-      {children}
-    </span>
-  );
-}
-
 /* ---------- page ---------- */
 
 export default function Profile() {
-  const storedName = localStorage.getItem("fullName");
-  const name = storedName || PROFILE.name;
+  const name = PROFILE.name;
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -215,19 +201,6 @@ export default function Profile() {
               <GradCapIcon size={18} />
               {PROFILE.role}
             </span>
-
-            <div className="mt-4 flex flex-col gap-3">
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-                <ContactItem icon={MailIcon} tone="sky">{PROFILE.email}</ContactItem>
-                <span className="hidden h-8 w-px bg-slate-300/60 dark:bg-blue-300/15 sm:block" />
-                <ContactItem icon={PhoneIcon} tone="sky">{PROFILE.phone}</ContactItem>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-                <ContactItem icon={PinIcon} tone="sky">{PROFILE.location}</ContactItem>
-                <span className="hidden h-8 w-px bg-slate-300/60 dark:bg-blue-300/15 sm:block" />
-                <ContactItem icon={GradCapIcon} tone="green">{PROFILE.department}</ContactItem>
-              </div>
-            </div>
           </div>
 
           {/* Edit */}

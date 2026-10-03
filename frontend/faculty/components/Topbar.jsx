@@ -105,9 +105,6 @@ export default function Topbar() {
         className={circleBtn}
       >
         <BellIcon />
-        <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pink-500 text-[11px] font-semibold text-white shadow-[0_0_10px_rgba(236,72,153,0.7)]">
-          3
-        </span>
       </button>
 
       {/* Profile chip → opens Profile page */}

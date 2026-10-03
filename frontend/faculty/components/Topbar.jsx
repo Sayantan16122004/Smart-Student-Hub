@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const PROFILE_PATH = "/faculty/profile";
+const NOTIFICATIONS_PATH = "/faculty/notifications";
 
 // same keys as Profile.jsx
 const AVATAR_KEY = "profileAvatar";
@@ -96,8 +97,13 @@ export default function Topbar() {
 
       <div className="flex-1" />
 
-      {/* Notifications */}
-      <button type="button" aria-label="Notifications" className={circleBtn}>
+      {/* Notifications → opens Notifications page */}
+      <button
+        type="button"
+        aria-label="Notifications"
+        onClick={() => navigate(NOTIFICATIONS_PATH)}
+        className={circleBtn}
+      >
         <BellIcon />
         <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pink-500 text-[11px] font-semibold text-white shadow-[0_0_10px_rgba(236,72,153,0.7)]">
           3

@@ -336,11 +336,11 @@ export default function Notifications() {
       <Card delay={0} className="lg:min-h-0 lg:flex-1">
         <div className="flex h-full flex-col px-6 py-5">
           {/* Tabs + Mark all as read */}
-          <div className="-mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+          <div className="-mt-3 flex flex-col gap-0 sm:flex-row sm:items-center sm:gap-3">
             <div
               role="tablist"
               aria-label="Notification filters"
-              className="nf-scroll -mx-3 flex min-w-0 flex-1 gap-3 overflow-x-auto px-3 pb-4 pt-3"
+              className="nf-scroll -mx-3 flex min-w-0 flex-1 gap-3 overflow-x-auto px-3 py-4"
             >
               {TABS.map((t) => (
                 <Tab key={t.key} tab={t} active={tab === t.key} count={counts[t.key] ?? 0} onClick={() => setTab(t.key)} />
@@ -351,7 +351,7 @@ export default function Notifications() {
               type="button"
               onClick={markAllRead}
               disabled={unreadCount === 0}
-              className="group/mark flex shrink-0 items-center gap-2 self-end whitespace-nowrap rounded-xl border border-blue-400/30 bg-white/60 px-5 py-2.5 text-[15px] font-medium text-slate-800 outline-none transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/60 hover:bg-blue-400/15 focus-visible:ring-2 focus-visible:ring-blue-300 active:translate-y-0 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:bg-white/60 dark:bg-[#0a1a55]/50 dark:text-slate-100 dark:disabled:hover:bg-[#0a1a55]/50 sm:self-auto"
+              className="group/mark flex shrink-0 items-center gap-2 mb-3 self-end whitespace-nowrap rounded-xl border border-blue-400/30 bg-white/60 px-5 py-2.5 text-[15px] font-medium text-slate-800 outline-none transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/60 hover:bg-blue-400/15 focus-visible:ring-2 focus-visible:ring-blue-300 active:translate-y-0 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:bg-white/60 dark:bg-[#0a1a55]/50 dark:text-slate-100 dark:disabled:hover:bg-[#0a1a55]/50 sm:mb-0 sm:self-auto"
             >
               <span className="transition-transform duration-300 group-hover/mark:scale-125"><CheckIcon /></span>
               Mark all as read

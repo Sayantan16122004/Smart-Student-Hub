@@ -72,14 +72,6 @@ const ChevronIcon = ({ open }) => (
     <path d="M9 6l6 6-6 6" />
   </svg>
 );
-const GradCapIcon = () => (
-  <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round">
-    <path d="M2 9l10-5 10 5-10 5-10-5z" fill="currentColor" fillOpacity="0.25" />
-    <path d="M6 11.5v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
-    <path d="M22 9v6" strokeLinecap="round" />
-  </svg>
-);
-
 const NAV = [
   { type: "link", label: "Dashboard", to: "/faculty", icon: HomeIcon, end: true },
   { type: "link", label: "My Profile", to: "/faculty/profile", icon: UserIcon },
@@ -196,11 +188,13 @@ export default function Sidebar() {
       <aside className="anim-slide-in flex h-full flex-col rounded-2xl border border-blue-300/30 bg-white/70 dark:bg-[#0a1650]/40 dark:bg-gradient-to-b dark:from-[#081445]/75 dark:via-[#0a1d60]/55 dark:to-[#0b2a80]/60 backdrop-blur-[6px] px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_40px_rgba(37,99,235,0.25)] transition-colors overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Brand */}
         <div className="mb-4 flex items-center gap-3 border-b border-blue-400/20 px-2 pb-4">
-          <span className="text-blue-500 dark:text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
-            <GradCapIcon />
-          </span>
-          <p className="text-[22px] font-semibold tracking-tight text-slate-900 dark:text-white">
-            FACULTY <span className="text-blue-500 dark:text-blue-400">PORTAL</span>
+          <img
+            src="/logo.png"
+            alt="Faculty logo"
+            className="h-11 w-11 shrink-0 object-contain drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]"
+          />
+          <p className="text-[28px] font-semibold leading-none tracking-tight text-slate-900 dark:text-white">
+            FACULTY
           </p>
         </div>
 

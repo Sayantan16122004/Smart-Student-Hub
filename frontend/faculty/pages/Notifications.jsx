@@ -257,7 +257,7 @@ function NotificationRow({ item, index, onOpen }) {
       className={`nf-slide group/row flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left outline-none transition-all duration-300 hover:border-blue-400/50 hover:bg-blue-400/[0.1] focus-visible:ring-2 focus-visible:ring-blue-300 ${
         item.read
           ? "border-slate-300/40 bg-white/40 dark:border-blue-300/10 dark:bg-[#0a1a55]/30"
-          : "border-blue-400/40 bg-blue-100/70 shadow-[0_0_24px_rgba(59,130,246,0.18)] dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:to-[#10247a]/30"
+          : "border-blue-400/40 bg-blue-100/70 shadow-[0_0_24px_rgba(59,130,246,0.18)] dark:bg-[#07123f]/60 dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:to-[#10247a]/30"
       }`}
     >
       <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover/row:scale-110 ${TONE[item.tone]}`}>
@@ -314,16 +314,8 @@ export default function Notifications() {
 
   const unreadCount = useMemo(() => items.filter((n) => !n.read).length, [items]);
 
-  const counts = useMemo(() => {
-    const unread = (c) => items.filter((n) => !n.read && n.category === c).length;
-    return {
-      all: unreadCount,
-      unread: unreadCount,
-      message: unread("message"),
-      system: unread("system"),
-      academic: unread("academic"),
-    };
-  }, [items, unreadCount]);
+  /* badges only on All + Unread */
+  const counts = { all: unreadCount, unread: unreadCount };
 
   const visible = useMemo(() => {
     if (tab === "all") return items;
@@ -381,7 +373,7 @@ export default function Notifications() {
             className="nf-scroll -mx-1 flex gap-3 overflow-x-auto px-1 pb-3"
           >
             {TABS.map((t) => (
-              <Tab key={t.key} tab={t} active={tab === t.key} count={counts[t.key]} onClick={() => setTab(t.key)} />
+              <Tab key={t.key} tab={t} active={tab === t.key} count={counts[t.key] ?? 0} onClick={() => setTab(t.key)} />
             ))}
           </div>
 

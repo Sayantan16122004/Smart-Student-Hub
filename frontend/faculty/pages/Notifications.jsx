@@ -370,7 +370,7 @@ export default function Notifications() {
           <div
             role="tablist"
             aria-label="Notification filters"
-            className="nf-scroll -mx-1 flex gap-3 overflow-x-auto px-1 pb-3"
+            className="nf-scroll -mx-3 -mt-2 flex gap-3 overflow-x-auto px-3 pb-4 pt-3"
           >
             {TABS.map((t) => (
               <Tab key={t.key} tab={t} active={tab === t.key} count={counts[t.key] ?? 0} onClick={() => setTab(t.key)} />

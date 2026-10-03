@@ -11,6 +11,16 @@ const readAvatar = () => {
   return saved === AVATAR_REMOVED ? null : saved || "/avatar.jpg";
 };
 
+// same storage as Profile.jsx (default name matches Profile's DEFAULT_PROFILE)
+const readName = () => {
+  try {
+    const saved = JSON.parse(localStorage.getItem("profileData") || "{}");
+    return (saved.name || "").trim() || "Pratul Shit";
+  } catch {
+    return "Pratul Shit";
+  }
+};
+
 const svgProps = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 };
 
 const CalendarIcon = ({ size = 22 }) => (
@@ -23,6 +33,11 @@ const UsersIcon = ({ size = 24 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5">
     <circle cx="9" cy="8" r="3.2" /><path d="M2.5 20c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6z" />
     <circle cx="17" cy="8.5" r="2.6" opacity="0.85" /><path d="M16.5 14.3c2.7.5 4.5 2.6 4.5 5.7h-4.3c0-2-.7-3.9-2.2-5.2.6-.3 1.3-.5 2-.5z" opacity="0.85" />
+  </svg>
+);
+const UserIcon = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="12" cy="8" r="4.2" /><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5z" />
   </svg>
 );
 const BookIcon = ({ size = 24 }) => (
@@ -41,8 +56,8 @@ const StarIcon = ({ size = 26 }) => (
     <path d="M12 2l3 6.9 7.4.7-5.6 4.9 1.7 7.3L12 17.9 5.5 21.8l1.7-7.3L1.6 9.6 9 8.9z" />
   </svg>
 );
-const ClockIcon = () => (
-  <svg width="22" height="22" {...svgProps}>
+const ClockIcon = ({ size = 22 }) => (
+  <svg width={size} height={size} {...svgProps}>
     <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" />
   </svg>
 );
@@ -86,10 +101,9 @@ const GradCapIcon = ({ size = 24 }) => (
     <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5l-6 3z" opacity="0.85" />
   </svg>
 );
-const GearIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
-    <path d="M10.3 2h3.4l.5 2.6a8 8 0 0 1 1.9 1.1l2.5-.9 1.7 3-2 1.7a8 8 0 0 1 0 2.2l2 1.7-1.7 3-2.5-.9a8 8 0 0 1-1.9 1.1l-.5 2.6h-3.4l-.5-2.6a8 8 0 0 1-1.9-1.1l-2.5.9-1.7-3 2-1.7a8 8 0 0 1 0-2.2l-2-1.7 1.7-3 2.5.9a8 8 0 0 1 1.9-1.1z" />
-    <circle cx="12" cy="12" r="3" fill="#0a1436" />
+const BellIcon = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2">
+    <path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" /><path d="M10 21a2 2 0 0 0 4 0" fill="none" />
   </svg>
 );
 const BarsIcon = ({ size = 24 }) => (
@@ -116,17 +130,19 @@ const ChevronRightIcon = ({ className = "" }) => (
 
 /* ---------- routes ---------- */
 
-// Every faculty page lives under /faculty/*. Dashboard itself is /faculty/dashboard.
+// Same paths as the Sidebar. Grouped modules open their first sub-page.
 export const FACULTY_ROUTES = {
-  dashboard: "/faculty/dashboard",
-  students: "/faculty/students",
-  academicInfo: "/faculty/academic-info",
-  attendance: "/faculty/attendance",
-  performance: "/faculty/performance",
-  certificates: "/faculty/certificates",
-  settings: "/faculty/settings",
-  activities: "/faculty/activities",
-  calendar: "/faculty/calendar",
+  dashboard: "/faculty",
+  profile: "/faculty/profile",
+  students: "/faculty/my-students/list",
+  academicInfo: "/faculty/academic-info/records",
+  attendance: "/faculty/attendance/mark",
+  certificates: "/faculty/certificate-verification/pending",
+  achievements: "/faculty/achievement-verification/pending",
+  remarks: "/faculty/student-remarks/add",
+  mentoring: "/faculty/mentoring/requests",
+  performance: "/faculty/student-performance/academic",
+  notifications: "/faculty/notifications",
 };
 
 /* ---------- data ---------- */
@@ -168,13 +184,28 @@ const ACTIVITIES = [
   { icon: ChatIcon, tone: "from-pink-600 to-rose-800 shadow-[0_0_14px_rgba(236,72,153,0.45)] ring-pink-400/50", title: "New message from student", detail: "Souvik Paul", time: "8 hours ago" },
 ];
 
+const QA_TONES = {
+  blue: { card: "from-blue-500/25 to-[#081a55]/40 border-blue-300/30", ico: "from-blue-500 to-blue-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]" },
+  violet: { card: "from-violet-500/25 to-[#170f4a]/40 border-violet-300/30", ico: "from-violet-500 to-purple-700 shadow-[0_0_12px_rgba(139,92,246,0.5)]" },
+  emerald: { card: "from-emerald-500/25 to-[#06303c]/40 border-emerald-300/30", ico: "from-emerald-500 to-emerald-700 shadow-[0_0_12px_rgba(16,185,129,0.5)]" },
+  amber: { card: "from-amber-500/25 to-[#241f2c]/40 border-amber-300/30", ico: "from-amber-500 to-amber-700 shadow-[0_0_12px_rgba(245,158,11,0.5)]" },
+  indigo: { card: "from-indigo-500/25 to-[#15105a]/40 border-indigo-300/30", ico: "from-indigo-500 to-indigo-700 shadow-[0_0_12px_rgba(99,102,241,0.5)]" },
+  pink: { card: "from-pink-500/25 to-[#33104a]/40 border-pink-300/30", ico: "from-pink-500 to-rose-700 shadow-[0_0_12px_rgba(236,72,153,0.5)]" },
+};
+
+// Same modules (and same order) as the sidebar, without Dashboard / Logout.
 const QUICK_ACTIONS = [
-  { label: "View Students", to: FACULTY_ROUTES.students, icon: UserPlusIcon, card: "from-blue-500/25 to-[#081a55]/40 border-blue-300/30", ico: "from-blue-500 to-blue-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]", arrow: "bg-blue-500/25 text-blue-200" },
-  { label: "Academic Info", to: FACULTY_ROUTES.academicInfo, icon: GradCapIcon, card: "from-violet-500/25 to-[#170f4a]/40 border-violet-300/30", ico: "from-violet-500 to-purple-700 shadow-[0_0_12px_rgba(139,92,246,0.5)]", arrow: "bg-violet-500/25 text-violet-200" },
-  { label: "Attendance", to: FACULTY_ROUTES.attendance, icon: CalendarIcon, card: "from-emerald-500/25 to-[#06303c]/40 border-emerald-300/30", ico: "from-emerald-500 to-emerald-700 shadow-[0_0_12px_rgba(16,185,129,0.5)]", arrow: "bg-emerald-500/25 text-emerald-200" },
-  { label: "Performance", to: FACULTY_ROUTES.performance, icon: BarsIcon, card: "from-amber-500/25 to-[#241f2c]/40 border-amber-300/30", ico: "from-amber-500 to-amber-700 shadow-[0_0_12px_rgba(245,158,11,0.5)]", arrow: "bg-amber-500/25 text-amber-200" },
-  { label: "Certificates", to: FACULTY_ROUTES.certificates, icon: FileIcon, card: "from-indigo-500/25 to-[#15105a]/40 border-indigo-300/30", ico: "from-indigo-500 to-indigo-700 shadow-[0_0_12px_rgba(99,102,241,0.5)]", arrow: "bg-indigo-500/25 text-indigo-200" },
-  { label: "Settings", to: FACULTY_ROUTES.settings, icon: GearIcon, card: "from-pink-500/25 to-[#33104a]/40 border-pink-300/30", ico: "from-pink-500 to-rose-700 shadow-[0_0_12px_rgba(236,72,153,0.5)]", arrow: "bg-pink-500/25 text-pink-200" },
+  { label: "My Profile", to: FACULTY_ROUTES.profile, icon: UserIcon, tone: "blue" },
+  { label: "My Students", to: FACULTY_ROUTES.students, icon: UsersIcon, tone: "violet" },
+  { label: "Student Academic Information", to: FACULTY_ROUTES.academicInfo, icon: BookIcon, tone: "indigo" },
+  { label: "Student Attendance", to: FACULTY_ROUTES.attendance, icon: CalendarIcon, tone: "emerald" },
+  { label: "Certificate Verification", to: FACULTY_ROUTES.certificates, icon: FileIcon, tone: "amber" },
+  { label: "Achievement Verification", to: FACULTY_ROUTES.achievements, icon: AwardIcon, tone: "pink" },
+  { label: "Remarks of Students", to: FACULTY_ROUTES.remarks, icon: ChatIcon, tone: "blue" },
+  { label: "Mentoring / Recommendations", to: FACULTY_ROUTES.mentoring, icon: GradCapIcon, tone: "violet" },
+  { label: "Pending Certificate Verification", to: FACULTY_ROUTES.certificates, icon: ClockIcon, tone: "amber" },
+  { label: "Student Performance", to: FACULTY_ROUTES.performance, icon: BarsIcon, tone: "indigo" },
+  { label: "Notifications", to: FACULTY_ROUTES.notifications, icon: BellIcon, tone: "pink" },
 ];
 
 const NOTICES = [
@@ -278,7 +309,7 @@ function CountUp({ value, duration = 1200 }) {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const fullName = localStorage.getItem("fullName") || "Faculty";
+  const fullName = readName();
   const [imgError, setImgError] = useState(false);
   const [avatar, setAvatar] = useState(readAvatar);
 
@@ -328,13 +359,8 @@ export default function Dashboard() {
                 <span className="text-blue-500 dark:text-blue-400"><CheckBadgeIcon size={26} /></span>
               </h1>
               <p className="mt-1.5 flex items-center gap-3 text-[15px] text-slate-600 dark:text-slate-100">
-                Together towards better education
-                <span className="hidden h-[3px] w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 shadow-[0_0_8px_rgba(59,130,246,0.9)] sm:block" />
+                Mentor, verify, and monitor assigned students
               </p>
-            </div>
-            <div className="hidden max-w-[19rem] text-[15px] italic leading-relaxed text-slate-600 dark:text-slate-200 xl:block">
-              <p>"Education is the most powerful weapon which you can use to change the world."</p>
-              <p className="mt-3 not-italic text-slate-500 dark:text-slate-200">— Nelson Mandela</p>
             </div>
           </div>
         </Card>
@@ -388,7 +414,7 @@ export default function Dashboard() {
         {/* Recent Activities */}
         <Card delay={480}>
           <div className="flex h-full min-h-0 flex-col p-5">
-            <SectionTitle icon={ClockIcon} viewAll onViewAll={() => navigate(FACULTY_ROUTES.activities)}>
+            <SectionTitle icon={ClockIcon} viewAll onViewAll={() => navigate(FACULTY_ROUTES.notifications)}>
               Recent Activities
             </SectionTitle>
             <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">
@@ -411,27 +437,25 @@ export default function Dashboard() {
           </div>
         </Card>
 
-        {/* Quick Actions */}
+        {/* Quick Actions — every sidebar module, scrolls if it doesn't fit */}
         <Card delay={560}>
           <div className="flex h-full min-h-0 flex-col p-5">
             <SectionTitle icon={BoltIcon}>Quick Actions</SectionTitle>
-            <div className="grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-3">
+            <div className="grid min-h-0 flex-1 auto-rows-[3.5rem] grid-cols-[repeat(2,minmax(0,1fr))] content-start gap-3 overflow-x-hidden overflow-y-auto p-1 [scrollbar-color:rgba(96,165,250,0.35)_transparent] [scrollbar-width:thin]">
               {QUICK_ACTIONS.map((a) => {
                 const Icon = a.icon;
+                const t = QA_TONES[a.tone];
                 return (
                   <button
                     key={a.label}
                     type="button"
                     onClick={() => navigate(a.to)}
-                    className={`group outline-none focus:outline-none focus-visible:outline-none flex items-center gap-3 rounded-xl border bg-gradient-to-br ${a.card} px-3 py-1.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-125 hover:shadow-[0_8px_24px_rgba(59,130,246,0.3)]`}
+                    className={`group outline-none focus:outline-none focus-visible:outline-none flex items-center gap-3 rounded-xl border bg-gradient-to-br ${t.card} px-3 py-1.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-125 hover:shadow-[0_8px_24px_rgba(59,130,246,0.3)]`}
                   >
-                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white transition-transform duration-300 group-hover:scale-110 ${a.ico}`}>
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white transition-transform duration-300 group-hover:scale-110 ${t.ico}`}>
                       <Icon size={20} />
                     </span>
-                    <span className="min-w-0 flex-1 pt-3 text-[11px] text-slate-800 dark:text-slate-100">{a.label}</span>
-                    <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-0.5 ${a.arrow}`}>
-                      <ArrowRightIcon size={13} />
-                    </span>
+                    <span className="min-w-0 flex-1 break-words text-[12px] font-medium leading-tight text-slate-800 dark:text-slate-100">{a.label}</span>
                   </button>
                 );
               })}
@@ -442,7 +466,7 @@ export default function Dashboard() {
         {/* Calendar & Notices */}
         <Card delay={640}>
           <div className="flex h-full min-h-0 flex-col p-5">
-            <SectionTitle icon={CalendarIcon} viewAll onViewAll={() => navigate(FACULTY_ROUTES.calendar)}>
+            <SectionTitle icon={CalendarIcon} viewAll onViewAll={() => navigate(FACULTY_ROUTES.notifications)}>
               Calendar &amp; Notices
             </SectionTitle>
             <div className="flex min-h-0 flex-1 flex-col divide-y divide-white/10">

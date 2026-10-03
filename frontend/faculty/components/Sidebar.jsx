@@ -165,7 +165,7 @@ const NAV = [
       { label: "Overall Progress", to: "/faculty/student-performance/overall" },
     ],
   },
-  { type: "link", label: "Notifications", to: "/faculty/notifications", icon: BellIcon, badge: 3 },
+  { type: "link", label: "Notifications", to: "/faculty/notifications", icon: BellIcon },
 ];
 
 const rowBase =

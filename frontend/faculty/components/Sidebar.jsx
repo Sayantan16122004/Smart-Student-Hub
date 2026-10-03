@@ -193,7 +193,7 @@ export default function Sidebar() {
             alt="Faculty logo"
             className="h-14 w-14 shrink-0 object-contain drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]"
           />
-          <p className="text-[22px] font-semibold tracking-tight text-slate-900 dark:text-white">
+          <p className="text-[28px] font-bold leading-none tracking-normal text-slate-900 dark:text-white">
             FACULTY
           </p>
         </div>

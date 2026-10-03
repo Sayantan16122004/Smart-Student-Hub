@@ -332,49 +332,30 @@ export default function Notifications() {
     <div className="relative flex min-h-full flex-col gap-4 px-4 py-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pl-4 lg:pr-3">
       <style>{ANIM_CSS}</style>
 
-      {/* Header */}
-      <Card
-        glow
-        delay={0}
-        tint="border-blue-400/30 bg-blue-50 dark:bg-[#07123f]/50 dark:bg-gradient-to-r dark:from-[#1346d0]/35 dark:via-[#10247a]/35 dark:to-[#1a1a8a]/30"
-      >
-        <div className="flex flex-col items-start gap-5 px-7 py-5 sm:flex-row sm:items-center">
-          <span className="nf-fade flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-[0_0_24px_rgba(59,130,246,0.6)] ring-4 ring-blue-300/30">
-            <BellIcon size={26} />
-          </span>
-
-          <div className="min-w-0 flex-1">
-            <h1 style={{ "--d": "100ms" }} className="nf-up text-3xl font-semibold text-slate-900 dark:text-white">Notifications</h1>
-            <p style={{ "--d": "180ms" }} className="nf-up mt-1 text-[15px] text-slate-600 dark:text-slate-300">
-              Stay updated with the latest activities, messages and important updates.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={markAllRead}
-            disabled={unreadCount === 0}
-            style={{ "--d": "260ms" }}
-            className="nf-up group/mark flex shrink-0 items-center gap-2 rounded-xl border border-blue-400/30 bg-white/60 px-5 py-2.5 text-[15px] font-medium text-slate-800 outline-none transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/60 hover:bg-blue-400/15 focus-visible:ring-2 focus-visible:ring-blue-300 active:translate-y-0 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:bg-white/60 dark:bg-[#0a1a55]/50 dark:text-slate-100 dark:disabled:hover:bg-[#0a1a55]/50 sm:self-start"
-          >
-            <span className="transition-transform duration-300 group-hover/mark:scale-125"><CheckIcon /></span>
-            Mark all as read
-          </button>
-        </div>
-      </Card>
-
       {/* List */}
-      <Card delay={120} className="lg:min-h-0 lg:flex-1">
+      <Card delay={0} className="lg:min-h-0 lg:flex-1">
         <div className="flex h-full flex-col px-6 py-5">
-          {/* Tabs */}
-          <div
-            role="tablist"
-            aria-label="Notification filters"
-            className="nf-scroll -mx-3 -mt-2 flex gap-3 overflow-x-auto px-3 pb-4 pt-3"
-          >
-            {TABS.map((t) => (
-              <Tab key={t.key} tab={t} active={tab === t.key} count={counts[t.key] ?? 0} onClick={() => setTab(t.key)} />
-            ))}
+          {/* Tabs + Mark all as read */}
+          <div className="-mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <div
+              role="tablist"
+              aria-label="Notification filters"
+              className="nf-scroll -mx-3 flex min-w-0 flex-1 gap-3 overflow-x-auto px-3 pb-4 pt-3"
+            >
+              {TABS.map((t) => (
+                <Tab key={t.key} tab={t} active={tab === t.key} count={counts[t.key] ?? 0} onClick={() => setTab(t.key)} />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={markAllRead}
+              disabled={unreadCount === 0}
+              className="group/mark flex shrink-0 items-center gap-2 self-end whitespace-nowrap rounded-xl border border-blue-400/30 bg-white/60 px-5 py-2.5 text-[15px] font-medium text-slate-800 outline-none transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400/60 hover:bg-blue-400/15 focus-visible:ring-2 focus-visible:ring-blue-300 active:translate-y-0 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:bg-white/60 dark:bg-[#0a1a55]/50 dark:text-slate-100 dark:disabled:hover:bg-[#0a1a55]/50 sm:self-auto"
+            >
+              <span className="transition-transform duration-300 group-hover/mark:scale-125"><CheckIcon /></span>
+              Mark all as read
+            </button>
           </div>
 
           <div className="h-px bg-slate-300/50 dark:bg-blue-300/10" />
